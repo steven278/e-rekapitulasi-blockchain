@@ -1,0 +1,85 @@
+bootnode -nodekey boot.key -addr :30305 -verbosity 7
+
+geth --datadir node1 \
+--port 30306 \
+--bootnodes enode://a382b7229cb416d0d763310e67616b16fe7d329f4c7c34b9e3e09a6d534f6141e49e02d7a42b7946753093c2850eb7a65543ca9680dbc10e19ec961e47f79784@127.0.0.1:30307 \
+--networkid 12345 \
+--unlock 0x18513FF9349286940DE321eCBa6e42980E843479 \
+--password node1/password.txt \
+--authrpc.port 8551 \
+--syncmode full \
+--allow-insecure-unlock \
+--mine \
+--http \
+--http.api admin,eth,miner,net,txpool,personal,web3,debug \
+--http.corsdomain "*" \
+--http.vhosts "*" \
+--http.port 8545 \
+--miner.gasprice 0 \
+--miner.etherbase 0x18513FF9349286940DE321eCBa6e42980E843479 \
+--vmdebug \
+--ipcdisable 
+
+geth --datadir node2 \
+--port 30307 \
+--bootnodes enode://70c54108d3f00570336f944b85ad0a446a0ceb80f1c41a596a421f2cee9045aa2ec3bdb6d811ec194fb1fb845472e0d76511a6f7e11504f1be2b4cf2cacc4d0f@127.0.0.1:30306  \
+--networkid 12345 \
+--unlock 0x1f7Cbe049B67CCA51c0B86203f1601096Ae98294 \
+--password node2/password.txt \
+--authrpc.port 8552 \
+--syncmode full \
+--allow-insecure-unlock \
+--mine \
+--http \
+--http.api admin,eth,miner,net,txpool,personal,web3,debug \
+--http.corsdomain "*" \
+--http.vhosts "*" \
+--http.port 8546 \
+--miner.gasprice 0 \
+--miner.etherbase 0x1f7Cbe049B67CCA51c0B86203f1601096Ae98294 \
+--vmdebug \
+--ipcdisable 
+
+geth --datadir node3 \
+--port 30308 \
+--bootnodes enode://a382b7229cb416d0d763310e67616b16fe7d329f4c7c34b9e3e09a6d534f6141e49e02d7a42b7946753093c2850eb7a65543ca9680dbc10e19ec961e47f79784@127.0.0.1:30307  \
+--networkid 12345 \
+--password node3/password.txt \
+--authrpc.port 8553 \
+--syncmode full \
+--vmdebug \
+--http \
+--http.api admin,eth,miner,net,txpool,personal,web3,debug \
+--http.corsdomain "*" \
+--http.vhosts "*" \
+--http.port 8547 \
+--allow-insecure-unlock \
+--unlock 0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5 \
+--ipcdisable
+
+enode bootnode
+enode://5ff88b2e5df8e13163a5a42d55ca333642a4d0c18e8a0597c46913fd4ceeb8028cc4636acfeaf01d826c1f8a0d781f4527763cbbcca1869f26083bde03d61eea@127.0.0.1:0?discport=30305
+
+enode 1
+enode://70c54108d3f00570336f944b85ad0a446a0ceb80f1c41a596a421f2cee9045aa2ec3bdb6d811ec194fb1fb845472e0d76511a6f7e11504f1be2b4cf2cacc4d0f@127.0.0.1:30306
+
+enode 2
+enode://a382b7229cb416d0d763310e67616b16fe7d329f4c7c34b9e3e09a6d534f6141e49e02d7a42b7946753093c2850eb7a65543ca9680dbc10e19ec961e47f79784@127.0.0.1:30307
+
+enode 3
+enode://351fe273c667ad10a75b6d4b18d961ceeca0a436c7a99ab60830e235fed8d7cc3d6742dae718a78016fed64b8449ef67b4f7aefea48e86d75d44e1cfedca90bd@127.0.0.1:30308
+
+pk account node 2
+92ab0df3fd9545425617803f94b6c7d030da40fa0f451c46e7be8b1bd00068ed
+
+pk account node 3
+9e4226b1d7337fbf97f3441154822f9529f70ad4d501a235232edb6c70d06e9c
+
+pk testaccount1  0x9D265236D1016642f183b0f35323E6973Dc7f588
+2e100ec56bfa513f173915f1d3c71b4013c446f7ff50bed69580e383d43e67f0
+
+eth.sendTransaction({
+  to: '0x9D265236D1016642f183b0f35323E6973Dc7f588',
+  from: eth.accounts[0],
+  value: 1000000000000000000
+});
