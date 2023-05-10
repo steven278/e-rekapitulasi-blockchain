@@ -7,7 +7,7 @@ geth --datadir node1 \
 --unlock 0x18513FF9349286940DE321eCBa6e42980E843479 \
 --password node1/password.txt \
 --authrpc.port 8551 \
---syncmode full \
+--syncmode "full" \
 --allow-insecure-unlock \
 --mine \
 --http \
@@ -18,7 +18,8 @@ geth --datadir node1 \
 --miner.gasprice 0 \
 --miner.etherbase 0x18513FF9349286940DE321eCBa6e42980E843479 \
 --vmdebug \
---ipcdisable 
+--ipcdisable \
+--dev
 
 geth --datadir node2 \
 --port 30307 \
@@ -27,7 +28,7 @@ geth --datadir node2 \
 --unlock 0x1f7Cbe049B67CCA51c0B86203f1601096Ae98294 \
 --password node2/password.txt \
 --authrpc.port 8552 \
---syncmode full \
+--syncmode "full" \
 --allow-insecure-unlock \
 --mine \
 --http \
@@ -38,7 +39,8 @@ geth --datadir node2 \
 --miner.gasprice 0 \
 --miner.etherbase 0x1f7Cbe049B67CCA51c0B86203f1601096Ae98294 \
 --vmdebug \
---ipcdisable 
+--ipcdisable \
+--dev
 
 geth --datadir node3 \
 --port 30308 \
@@ -46,7 +48,7 @@ geth --datadir node3 \
 --networkid 12345 \
 --password node3/password.txt \
 --authrpc.port 8553 \
---syncmode full \
+--syncmode "full" \
 --vmdebug \
 --http \
 --http.api admin,eth,miner,net,txpool,personal,web3,debug \
@@ -56,6 +58,7 @@ geth --datadir node3 \
 --allow-insecure-unlock \
 --unlock 0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5 \
 --ipcdisable
+--dev
 
 enode bootnode
 enode://5ff88b2e5df8e13163a5a42d55ca333642a4d0c18e8a0597c46913fd4ceeb8028cc4636acfeaf01d826c1f8a0d781f4527763cbbcca1869f26083bde03d61eea@127.0.0.1:0?discport=30305
@@ -74,12 +77,22 @@ pk account node 2
 
 pk account node 3
 9e4226b1d7337fbf97f3441154822f9529f70ad4d501a235232edb6c70d06e9c
+----------------------------------------------------------------------------
+testaccount1  address=0x9D265236D1016642f183b0f35323E6973Dc7f588
+pk  2e100ec56bfa513f173915f1d3c71b4013c446f7ff50bed69580e383d43e67f0
 
-pk testaccount1  0x9D265236D1016642f183b0f35323E6973Dc7f588
-2e100ec56bfa513f173915f1d3c71b4013c446f7ff50bed69580e383d43e67f0
+testaccount2 address=0xAc57806Bf7F6822610dc7A76ECc642Ef211dD4BA
+pk 45c388f5a3b34772fa6380ac8fae5824fb8e965bbf724e8f23569b810bc47a4f
+
+testaccount3 address=0x77359256c5ebf1Ef3A0E4FcF4cBc8347960B8F7C
+pk d65bade1ff86860a53bf553622f5a393836ff1693198fc22091a7472d8e11e89
+
 
 eth.sendTransaction({
-  to: '0x9D265236D1016642f183b0f35323E6973Dc7f588',
+  to: '0x77359256c5ebf1Ef3A0E4FcF4cBc8347960B8F7C',
   from: eth.accounts[0],
   value: 1000000000000000000
 });
+
+metamask
+D0mp373u47735

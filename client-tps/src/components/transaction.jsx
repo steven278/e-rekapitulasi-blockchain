@@ -3,126 +3,36 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
+import contractABI from './contractABI';
 
 const MyTrx = () => {
     const [trx, setTrx] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState('');
     const [nomorTPS, setNomorTPS] = useState('');
     const [infoTPS, setInfoTPS] = useState('');
     const [jumlahPemilih, setJumlahPemilih] = useState('');
     const [suaraPaslon, setSuaraPaslon] = useState('');
     const [jumlahSuara, setJumlahSuara] = useState('');
+    const [formImage, setFormImage] = useState('');
     const web3 = new Web3('http://localhost:8547');
     
     const getTransaction = async () => {
-        const contract = new web3.eth.Contract([
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint16",
-                        "name": "_nomorTPS",
-                        "type": "uint16"
-                    },
-                    {
-                        "internalType": "string[4]",
-                        "name": "_infoTPS",
-                        "type": "string[4]"
-                    },
-                    {
-                        "internalType": "uint16[2]",
-                        "name": "_jumlahPemilih",
-                        "type": "uint16[2]"
-                    },
-                    {
-                        "internalType": "uint16[2]",
-                        "name": "_suaraPaslon",
-                        "type": "uint16[2]"
-                    },
-                    {
-                        "internalType": "uint16[3]",
-                        "name": "_jumlahSuara",
-                        "type": "uint16[3]"
-                    }
-                ],
-                "name": "storeVoteResult",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "_from",
-                        "type": "address"
-                    }
-                ],
-                "name": "getHasilRekap",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "uint16",
-                                "name": "nomorTPS",
-                                "type": "uint16"
-                            },
-                            {
-                                "internalType": "string[4]",
-                                "name": "infoTPS",
-                                "type": "string[4]"
-                            },
-                            {
-                                "internalType": "uint16[2]",
-                                "name": "jumlahPemilih",
-                                "type": "uint16[2]"
-                            },
-                            {
-                                "internalType": "uint16[2]",
-                                "name": "suaraPaslon",
-                                "type": "uint16[2]"
-                            },
-                            {
-                                "internalType": "uint16[3]",
-                                "name": "jumlahSuara",
-                                "type": "uint16[3]"
-                            }
-                        ],
-                        "internalType": "struct Rekapitulasi.HasilRekapTPS",
-                        "name": "",
-                        "type": "tuple"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "name": "hasilRekap",
-                "outputs": [
-                    {
-                        "internalType": "uint16",
-                        "name": "nomorTPS",
-                        "type": "uint16"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ], '0x073271F5115B111a70093cC83bC02A99ffb4398c');
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts"
+        })
+        console.log(accounts[0])
+        const contract = new web3.eth.Contract(contractABI, '0x61A4D1363E39030A823986D53dDc09cc05af8d5C');
         const transaction = await contract.methods
-        .getHasilRekap('0x9D265236D1016642f183b0f35323E6973Dc7f588').call()
+        .getHasilRekap(accounts[0]).call()
         setTrx(transaction)
-        console.log(trx)
+        setIsSubmitted(transaction.isSubmitted);
+        console.log(transaction)
         setNomorTPS(transaction.nomorTPS)
         setInfoTPS(transaction.infoTPS)
         setJumlahPemilih(transaction.jumlahPemilih)
         setSuaraPaslon(transaction.suaraPaslon)
         setJumlahSuara(transaction.jumlahSuara)
+        setFormImage('https://e-rekap.infura-ipfs.io/ipfs/'+ transaction.formImage)
     }
 
     useEffect(() => {
@@ -131,6 +41,7 @@ const MyTrx = () => {
 
     return (
         <Container>
+            {/* <h3>isSubmitted = {isSubmitted} </h3> */}
             <Table striped bordered hover className='mt-5'>
                 <tbody>
                     <tr>
@@ -183,7 +94,7 @@ const MyTrx = () => {
                     </tr>
                     <tr>
                         <th>URL gambar Form C1</th>
-                        <td><a>https://www.google.com/</a></td>
+                        <td><a href={formImage}>{formImage}</a></td>
                     </tr>
                 </tbody>
             </Table>
