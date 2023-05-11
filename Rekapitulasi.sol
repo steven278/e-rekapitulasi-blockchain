@@ -26,8 +26,9 @@ contract Rekapitulasi {
     }
 
     //register wallet ???
-    function registerWalletOfficer(address _from) public payable {
+    function registerWalletOfficer(address _walletAddress, uint16 _TPS_ID) public payable {
         require(msg.sender == owner, "This wallet address is not allowed to make transaction");
+        voteResult[_TPS_ID].KPPSWallet = _walletAddress;
     }
     
     //get rekapitulasi by TPS_ID
