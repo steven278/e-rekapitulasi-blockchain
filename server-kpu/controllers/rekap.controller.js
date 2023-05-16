@@ -1,3 +1,5 @@
+const { Province, City, District, SubDistrict, Tps } = require('../models');
+
 const getAllRecapitulation = async (req, res, next) => {
     return res.status(200).json({
         status: 'success',
