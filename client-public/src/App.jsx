@@ -6,11 +6,11 @@ import OverviewTable from './components/Overview';
 
 function App() {
   const [count, setCount] = useState(0)
-
   return (
     <div>
       <MyNavbar/>
       <OverviewTable/>
+      {province}
     </div>
   )
 }
