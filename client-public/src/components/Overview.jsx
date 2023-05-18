@@ -2,8 +2,27 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios'
+import { useState, useEffect } from 'react';
+import fetchData from '../components/fetchData';
 
-const OverviewTable = () => {
+const OverviewTable = (props) => {
+    const [dataToFetch, setDataToFectch] = useState([]);
+    console.log(props)
+    // setDataToFectch(props.data)
+    const [region, setRegion] = useState([]);
+    const fetchingData = async () => {
+        try {
+            const responseData = await fetchData(dataToFetch);
+            // setProvince(responseData);
+            setRegion(responseData);
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    useEffect(() => {
+        fetchingData();
+    }, [])
     return (
     <Container>
         <Row>
@@ -16,11 +35,13 @@ const OverviewTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a href="">tes</a></td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+                    {/* {props.data.map(item => (   
+                        <tr>
+                            <td><a href={item.id}>{item.nama}</a></td>
+                            <td>10</td>
+                            <td>10</td>
+                        </tr>
+                    ))} */}
                 </tbody>
             </Table>
         </Row>

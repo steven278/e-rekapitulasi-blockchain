@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-// const cors = require('cors');
+const cors = require('cors');
 
 const baseUrl = process.env.BASE_URL || '/e-rekap';
 const { router } = require('./routes/routes');
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 //     credentials: true,
 // }));
 
-// app.use(cors());
+app.use(cors());
 
 app.use(`${baseUrl}`, router);
 
