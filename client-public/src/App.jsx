@@ -6,13 +6,12 @@ import OverviewTable from './components/Overview';
 import fetchData from './components/fetchData'
 
 function App() {
-  const [provinces, setProvince] = useState([]);
-  const dataToFetch = {id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'}
+  // const [provinces, setProvince] = useState([]);
   return (
     <div>
       <MyNavbar/>
       {/* <OverviewTable data={provinces}/> */}
-      <OverviewTable data={dataToFetch}/>
+      <OverviewTable/>
     </div>
   )
 }

@@ -6,15 +6,27 @@ import axios from 'axios'
 import { useState, useEffect } from 'react';
 import fetchData from '../components/fetchData';
 
-const OverviewTable = (props) => {
-    const [dataToFetch, setDataToFectch] = useState([]);
-    console.log(props)
-    // setDataToFectch(props.data)
+const OverviewTable = () => {
+    const [dataToFetch, setDataToFectch] = useState({id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'});
     const [region, setRegion] = useState([]);
+
+    const fetchRegionDetail = async (id) => {
+        console.log(id, typeof(id), id.length)
+        if(id.length == 2){
+            setDataToFectch({id: 'id_kota', nama: 'nama_kota', region: 'city'})
+            console.log(dataToFetch)
+        }
+        try {
+            const responseData = await fetchData(dataToFetch);
+            setRegion(responseData);
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const fetchingData = async () => {
         try {
             const responseData = await fetchData(dataToFetch);
-            // setProvince(responseData);
             setRegion(responseData);
         } catch (error) {
             console.error(error)
@@ -35,13 +47,17 @@ const OverviewTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {props.data.map(item => (   
+                    {region.map(item => (   
                         <tr>
-                            <td><a href={item.id}>{item.nama}</a></td>
+                            {/* <td><a onClick={fetchingData()}>{item.nama}</a></td> */}
+                            <td><a href="#" onClick={(e) => {
+                                e.preventDefault();
+                                fetchRegionDetail(item.id)}
+                                }>{item.nama}</a></td>
                             <td>10</td>
                             <td>10</td>
                         </tr>
-                    ))} */}
+                    ))}
                 </tbody>
             </Table>
         </Row>

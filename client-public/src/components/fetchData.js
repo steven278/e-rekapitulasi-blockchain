@@ -1,5 +1,4 @@
 const getRegion = async (props) => {
-    // console.log(props)
     try {
         const response = await fetch(`http://localhost:5000/e-rekap/region/${props.region}`);
         if (!response.ok) {
