@@ -2,61 +2,17 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import axios from 'axios'
 import { useState, useEffect } from 'react';
+import RegionTable from './RegionTable';
+import ViewRecap from './ViewRecap';
 
 const OverviewTable = () => {
-    const [dataToFetch, setDataToFectch] = useState({id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'});
-    const [region, setRegion] = useState([]);
-    const [regionId, setRegionId] = useState('');
-
-    const fetchRegionDetail = async (id) => {
-        if(id.length == 2){
-            setDataToFectch({id: 'id_kota', nama: 'nama_kota', region: 'city'})
-        }else if(id.length == 4){
-            setDataToFectch({id: 'id_kecamatan', nama: 'nama_kecamatan', region: 'district'})
-        }else if(id.length == 6){
-            setDataToFectch({id: 'id_kelurahan', nama: 'nama_kelurahan', region: 'subdistrict'})
-        }else if(id.length == 10){
-            setDataToFectch({id: 'id_TPS', nama: 'no_TPS', region: 'tps'})
-        }
-        setRegionId(id)
-    }
-    useEffect(() => {
-        fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
-        .then(response => response.json())
-        .then(json => json.data.map((curr) => ({
-            id: curr[dataToFetch.id],
-            nama: curr[dataToFetch.nama]
-        })))
-        .then(res => setRegion(res))
-    }, [dataToFetch])
-
+    const [viewRecap, setViewRecap] = useState(false)
     return (
     <Container>
         <Row>
-            <Table striped bordered hover className='mt-3'>
-                <thead>
-                    <tr>
-                        <th>Wilayah</th>
-                        <th>Paslon 01</th>
-                        <th>Paslon 02</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {region.map(item => (   
-                        <tr>
-                            {/* <td><a onClick={fetchingData()}>{item.nama}</a></td> */}
-                            <td><a href="#" onClick={(e) => {
-                                e.preventDefault();
-                                fetchRegionDetail(item.id)}
-                                }>{item.nama}</a></td>
-                            <td>10</td>
-                            <td>10</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            {viewRecap == true && <ViewRecap/>}
+            {viewRecap == false && <RegionTable recapState={setViewRecap} />}
         </Row>
     </Container>
     );
