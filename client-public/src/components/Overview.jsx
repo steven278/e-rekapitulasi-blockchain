@@ -4,37 +4,34 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios'
 import { useState, useEffect } from 'react';
-import fetchData from '../components/fetchData';
 
 const OverviewTable = () => {
     const [dataToFetch, setDataToFectch] = useState({id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'});
     const [region, setRegion] = useState([]);
+    const [regionId, setRegionId] = useState('');
 
     const fetchRegionDetail = async (id) => {
-        console.log(id, typeof(id), id.length)
         if(id.length == 2){
             setDataToFectch({id: 'id_kota', nama: 'nama_kota', region: 'city'})
-            console.log(dataToFetch)
+        }else if(id.length == 4){
+            setDataToFectch({id: 'id_kecamatan', nama: 'nama_kecamatan', region: 'district'})
+        }else if(id.length == 6){
+            setDataToFectch({id: 'id_kelurahan', nama: 'nama_kelurahan', region: 'subdistrict'})
+        }else if(id.length == 10){
+            setDataToFectch({id: 'id_TPS', nama: 'no_TPS', region: 'tps'})
         }
-        try {
-            const responseData = await fetchData(dataToFetch);
-            setRegion(responseData);
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const fetchingData = async () => {
-        try {
-            const responseData = await fetchData(dataToFetch);
-            setRegion(responseData);
-        } catch (error) {
-            console.error(error)
-        }
+        setRegionId(id)
     }
     useEffect(() => {
-        fetchingData();
-    }, [])
+        fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
+        .then(response => response.json())
+        .then(json => json.data.map((curr) => ({
+            id: curr[dataToFetch.id],
+            nama: curr[dataToFetch.nama]
+        })))
+        .then(res => setRegion(res))
+    }, [dataToFetch])
+
     return (
     <Container>
         <Row>
