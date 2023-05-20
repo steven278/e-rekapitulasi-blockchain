@@ -2,6 +2,7 @@ const router = require('express').Router();
 const rekap = require('./rekap.routes');
 const region = require('./region.routes');
 const wallet = require('./wallet.routes');
+const setup = require('./setup.routes');
 
 router.get('/', (req, res, next) => [
     res.status(200).json({
@@ -12,6 +13,7 @@ router.get('/', (req, res, next) => [
 router.use('/rekap', rekap);
 router.use('/region', region);
 router.use('/wallet', wallet);
+router.use('/setup', setup);
 
 router.use((err, req, res, next) => {
     if (err.name === 'SequelizeDatabaseError' || err.name === 'ReferenceError' || err.name === 'SequelizeForeignKeyConstraintError') {
