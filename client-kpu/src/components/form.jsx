@@ -261,15 +261,20 @@ const MyForm = ({accounts}) => {
         e.preventDefault();
         const validationErrors = validateForm(formData);
         if (Object.keys(validationErrors).length === 0 && fileError === '') {
-            
-            const data = new FormData();
-            data.append("data", formData.tps_id);
+            const data = new FormData(); //FormData interface provides a way to easily construct a set of key/value
+            for (const key in formData) {
+                if (formData.hasOwnProperty(key)) {
+                    data.append(`${key}`,`${formData[key]}`);
+                }
+            }
             data.append("formImage",formImage);
+            data.append("accounts", accounts)
             fetch('http://localhost:5000/e-rekap/rekap/', {
                 method: 'POST',
                 body: data
-            }).then(response => response.json())
-            .then(json => console.log(json.data))
+            })
+            .then(response => response.json())
+            .then(json => console.log(json))
         //     fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
         // .then(response => response.json())
         // .then(json => json.data.map((curr) => ({
@@ -292,19 +297,19 @@ const MyForm = ({accounts}) => {
             {/* <h3>{!client && (
           <p>Oh oh, Not connected to IPFS. Checkout out the logs for errors</p>
         )}</h3> */}
-            <Form onSubmit={handleSubmit} method="post" className="mt-4">
+            <Form onSubmit={handleSubmit} method="post"  encType="multipart/form-data" className="mt-4">
                 <Row>
                     <Form.Group className="mb-4" >
-                        <Form.Label>Info TPS</Form.Label>
+                        <Form.Label>ID TPS</Form.Label>
                         <Form.Control type="number" placeholder="ID TPS" className='mb-2' required
-                        name="idTPS"
-                        value = {formData.idTPS}
+                        name="tps_id"
+                        value = {formData.tps_id}
                         onChange = {handleChange} />
                     </Form.Group>
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-4" >
+                        <Form.Group className="mb-4">
                             <Form.Label>Data Pemilih</Form.Label>
 
                             <Form.Control type="number" placeholder="Pemilih Terdaftar" className='mb-2'  required 
@@ -338,7 +343,7 @@ const MyForm = ({accounts}) => {
                         </Form.Group>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-4" enctype="multipart/form-data">
+                        <Form.Group className="mb-4">
                             <Form.Label>Data Suara</Form.Label>
                             <Form.Control type="number" placeholder="Suara Sah" className='mb-2' required
                             name="jumlahSeluruhSuaraSah"

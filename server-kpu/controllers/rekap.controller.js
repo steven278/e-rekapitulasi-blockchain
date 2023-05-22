@@ -7,10 +7,10 @@ const web3 = new Web3(new Web3.providers.HttpProvider(
 ));
 
 // Creating a signing account from a private key
-const signer = web3.eth.accounts.privateKeyToAccount(
-    "9e4226b1d7337fbf97f3441154822f9529f70ad4d501a235232edb6c70d06e9c"
-);
-web3.eth.accounts.wallet.add(signer);
+// const signer = web3.eth.accounts.privateKeyToAccount(
+//     "9e4226b1d7337fbf97f3441154822f9529f70ad4d501a235232edb6c70d06e9c"
+// );
+// web3.eth.accounts.wallet.add(signer);
 // Creating a Contract instance
 const contract = new web3.eth.Contract(
     compiledContract,
@@ -19,33 +19,24 @@ const contract = new web3.eth.Contract(
 
 const createRecapitulation = async (req, res, next) => {
     try {
-        // console.log(req)
-        console.log(req.file)
-        console.log(req.body)
-        // const { tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
-        //     jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage } = req.body;
-        // const { formImage } = req.body.file
-        // const body = req.body;
-        // console.log(body)
+        const { tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
+            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, accounts } = req.body;
+        const { formImage } = req.file
+        const tx = contract.methods.storeVoteResult(
+            tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
+            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage
+        );
+        // web3.eth.accounts.wallet.add(accounts);
+        const receipt = await tx
+            .send({
+                from: accounts,
+                gas: 138041,
+            })
+        console.log(`Mined in block ${receipt.blockNumber}`);
         return res.status(201).json({
             message: 'recapitulation created successfully',
-            data: req.body,
-            file: req.file
+            data: receipt
         })
-        // const tx = contract.methods.storeVoteResult(
-        //     tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
-        //     jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage
-        // );
-        // const receipt = await tx
-        //     .send({
-        //         from: signer.address,
-        //         gas: 138041,
-        //     })
-        // console.log(`Mined in block ${receipt.blockNumber}`);
-        // return res.status(201).json({
-        //     message: 'recapitulation created successfully',
-        //     data: receipt
-        // })
     } catch (err) {
         next(err);
     }
