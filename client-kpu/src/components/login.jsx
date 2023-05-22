@@ -1,39 +1,114 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Web3 from 'web3';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
-function Login() {
-    const [balance, setBalance] = useState('');
-    const [address, setAddress] = useState('');
-    const navigate = useNavigate();
+// function Login() {
+//     const [balance, setBalance] = useState('');
+//     const [address, setAddress] = useState('');
+//     const navigate = useNavigate();
 
-    async function connectToMetaMask() {
-        if (window.ethereum) {
-            try {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const web3 = new Web3(window.ethereum);
-                const accounts = await web3.eth.getAccounts();
-                const balance = await web3.eth.getBalance(accounts[0]);
-                setBalance(web3.utils.fromWei(balance, 'ether'));
-                navigate('/form', {state:{address : accounts[0], balance}})
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            console.error('MetaMask not detected');
+//     async function connectToMetaMask() {
+//         if (window.ethereum) {
+//             try {
+//                 await window.ethereum.request({ method: 'eth_requestAccounts' });
+//                 const web3 = new Web3(window.ethereum);
+//                 const accounts = await web3.eth.getAccounts();
+//                 const balance = await web3.eth.getBalance(accounts[0]);
+//                 setBalance(web3.utils.fromWei(balance, 'ether'));
+//                 navigate('/form', {state:{address : accounts[0], balance}})
+//             } catch (error) {
+//                 console.error(error);
+//             }
+//         } else {
+//             console.error('MetaMask not detected');
+//         }
+//     }
+
+//     return (
+//         <Container className="mt-5">
+//             <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button>
+//             <h3>Account balance: {balance} ETH</h3>
+//             <h3>Account address: {address} ETH</h3>
+//         </Container>
+//     );
+// }
+
+const Login = ({setAccounts, accounts}) => {
+    const connetWallet = () => {
+        //  Check if MetaMask is installed
+        if (typeof window.ethereum !== 'undefined') {
+            // Request account access if needed
+            window.ethereum.request({ method: 'eth_requestAccounts' })
+            .then(accounts => {
+                setAccounts(accounts);
+                window.localStorage.setItem('accounts', accounts[0]);
+            })
+            .catch(error => {
+                console.log(error);
+            });
         }
     }
+    // const handleDisconnect = () => {
+    //     console.log('aewerwr')
+    //     console.log(window.ethereum)
+    //     console.log(window.ethereum.disconnect)
+    //     if (window.ethereum && window.ethereum.disconnect) {
+    //         window.ethereum.disconnect()
+    //         .then(() => {
+    //             console.log('Disconnected from MetaMask');
+    //             setAccounts([])
+    //             window.localStorage.removeItem('accounts');
+    //         })
+    //         .catch(error => {
+    //             console.log('Error disconnecting from MetaMask:', error);
+    //         });
+    //     }
+    // }
 
+    // const loadWeb3 = async () => {
+    //     if (typeof window.ethereum !== 'undefined') {
+    //         await window.ethereum.enable();
+    //         // Other Web3 initialization code can go here
+    //     } else {
+    //         console.log("Please install MetaMask to use this application.");
+    //     }
+    // };
+    useEffect(() => {
+        const acc = [];
+        if(accounts.length == 0) {
+            window.localStorage.removeItem('accounts');
+        }
+        acc.push(window.localStorage.getItem('accounts'));
+        if(acc){
+            setAccounts(acc);
+        }
+    }, []);
+    
     return (
-        <Container className="mt-5">
-            <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button>
-            <h3>Account balance: {balance} ETH</h3>
-            <h3>Account address: {address} ETH</h3>
+        <Container>
+            {accounts[0] ? (
+            <div className='mt-5'>
+                <h2>Logged in with MetaMask!</h2>
+                <p>Account: {accounts[0]}</p>
+                {/* <Button onClick={(e) => {
+                            handleDisconnect()
+                }}>Disconnect Wallet</Button> */}
+                {/* Your logged-in content goes here */}
+            </div>
+            ) : (
+            <div className='mt-5'>
+                <Button onClick={(e) => {
+                            connetWallet()
+                }}>Login with Metamask</Button>
+                <h2>Login with MetaMask</h2>
+                <p>Please install and connect MetaMask to continue.</p>
+            </div>
+            )}
         </Container>
-    );
-}
+        );
+    };
 
 export default Login;
 

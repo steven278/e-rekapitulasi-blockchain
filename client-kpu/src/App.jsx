@@ -6,20 +6,17 @@ import MyNavbar from './components/navbar';
 import MyForm from './components/form';
 import Login from './components/login';
 import MyTrx from './components/transaction';
-
+import Button from 'react-bootstrap/Button';
 
 function App() {
+  const [accounts, setAccounts] = useState([]);
+
   return (
-    <BrowserRouter>
-      <div className="App">
+    <div className="App">
         <MyNavbar/>
-        <Routes>
-          <Route path="" element={<MyTrx/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/form" element={<MyForm/>}/>
-        </Routes>
+        <Login setAccounts={setAccounts} accounts={accounts}/>
+        {accounts[0] ? (<MyForm/>) : (<div></div>)}
       </div>
-    </BrowserRouter>
   )
 }
 

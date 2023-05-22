@@ -9,12 +9,12 @@ import ViewRecap from './ViewRecap';
 const OverviewTable = () => {
     const [viewRecap, setViewRecap] = useState(false)
     return (
-    <Container>
-        <Row>
-            {viewRecap == true && <ViewRecap/>}
-            {viewRecap == false && <RegionTable recapState={setViewRecap} />}
-        </Row>
-    </Container>
+        <Container>
+            <Row>
+                {viewRecap == true && <ViewRecap/>}
+                {viewRecap == false && <RegionTable recapState={setViewRecap} />}
+            </Row>
+        </Container>
     );
 }
 
