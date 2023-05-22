@@ -3,113 +3,61 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_from",
+				"name": "_walletAddress",
 				"type": "address"
-			}
-		],
-		"name": "getHasilRekap",
-		"outputs": [
+			},
 			{
-				"components": [
-					{
-						"internalType": "bool",
-						"name": "isSubmitted",
-						"type": "bool"
-					},
-					{
-						"internalType": "uint16",
-						"name": "nomorTPS",
-						"type": "uint16"
-					},
-					{
-						"internalType": "string[4]",
-						"name": "infoTPS",
-						"type": "string[4]"
-					},
-					{
-						"internalType": "uint16[2]",
-						"name": "jumlahPemilih",
-						"type": "uint16[2]"
-					},
-					{
-						"internalType": "uint16[2]",
-						"name": "suaraPaslon",
-						"type": "uint16[2]"
-					},
-					{
-						"internalType": "uint16[3]",
-						"name": "jumlahSuara",
-						"type": "uint16[3]"
-					},
-					{
-						"internalType": "string",
-						"name": "formImage",
-						"type": "string"
-					}
-				],
-				"internalType": "struct Rekapitulasi.HasilRekapTPS",
-				"name": "",
-				"type": "tuple"
+				"internalType": "uint256",
+				"name": "_TPS_ID",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"name": "registerWalletOfficer",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "hasilRekap",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "isSubmitted",
-				"type": "bool"
+				"internalType": "uint256",
+				"name": "_TPS_ID",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint16",
-				"name": "nomorTPS",
+				"name": "_pemilihTerdaftar",
 				"type": "uint16"
 			},
-			{
-				"internalType": "string",
-				"name": "formImage",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
 			{
 				"internalType": "uint16",
-				"name": "_nomorTPS",
+				"name": "_penggunaHakPilih",
 				"type": "uint16"
 			},
 			{
-				"internalType": "string[4]",
-				"name": "_infoTPS",
-				"type": "string[4]"
+				"internalType": "uint16",
+				"name": "_suaraPaslon1",
+				"type": "uint16"
 			},
 			{
-				"internalType": "uint16[2]",
-				"name": "_jumlahPemilih",
-				"type": "uint16[2]"
+				"internalType": "uint16",
+				"name": "_suaraPaslon2",
+				"type": "uint16"
 			},
 			{
-				"internalType": "uint16[2]",
-				"name": "_suaraPaslon",
-				"type": "uint16[2]"
+				"internalType": "uint16",
+				"name": "_jumlahSeluruhSuaraSah",
+				"type": "uint16"
 			},
 			{
-				"internalType": "uint16[3]",
-				"name": "_jumlahSuara",
-				"type": "uint16[3]"
+				"internalType": "uint16",
+				"name": "_jumlahSuaraTidakSah",
+				"type": "uint16"
+			},
+			{
+				"internalType": "uint16",
+				"name": "_jumlahSuaraSahDanTidakSah",
+				"type": "uint16"
 			},
 			{
 				"internalType": "string",
@@ -119,7 +67,96 @@ const contractABI = [
 		],
 		"name": "storeVoteResult",
 		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_TPS_ID",
+				"type": "uint256"
+			}
+		],
+		"name": "getRecapitulationByTpsId",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint16",
+						"name": "pemilihTerdaftar",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "penggunaHakPilih",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "suaraPaslon1",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "suaraPaslon2",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "jumlahSeluruhSuaraSah",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "jumlahSuaraTidakSah",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "jumlahSuaraSahDanTidakSah",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint8",
+						"name": "isSubmitted",
+						"type": "uint8"
+					},
+					{
+						"internalType": "address",
+						"name": "KPPSWallet",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "formImageHash",
+						"type": "string"
+					}
+				],
+				"internalType": "struct Rekapitulasi.VoteResult",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ];
