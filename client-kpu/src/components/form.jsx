@@ -197,18 +197,18 @@ const contract = new web3.eth.Contract(contractABI,"0x2488B908e0E1A0160d8C633D5d
 //     )
 // }
 
-const MyForm = () => {
+const MyForm = ({accounts}) => {
     const [formData, setFormData] = useState({
-        idTPS: '',
+        tps_id: '',
         pemilihTerdaftar: '',
         penggunaHakPilih: '',
         suaraPaslon1: '',
         suaraPaslon2: '',
-        suaraSah: '',
-        suaraTidakSah: '',
-        totalSuaraSahTidakSah: '',
+        jumlahSeluruhSuaraSah: '',
+        jumlahSuaraTidakSah: '',
+        jumlahSuaraSahDanTidakSah: '',
     })
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [formImage, setFormImage] = useState(null);
     const [errors, setErrors] = useState({});
     const [fileError, setFileError] = useState('');
 
@@ -221,14 +221,16 @@ const MyForm = () => {
     }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setSelectedFile(file);
+        setFormImage(file)
+        // setFormData((prevData) => ({
+        //     ...prevData,
+        //     formImage: file
+        // }));
         setFileError('')
     
         if (file) {
-            console.log('masuk')
             const fileType = file.type;
             if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
-                console.log('saalaaah')
                 setFileError('Please select a PNG or JPEG file.');
             }
         }
@@ -242,14 +244,14 @@ const MyForm = () => {
         if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
             errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
         }
-        if(data.suaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
-            errors.suaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
+        if(data.jumlahSeluruhSuaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
+            errors.jumlahSeluruhSuaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
         }
-        if(data.suaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.suaraSah))){
-            errors.suaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
+        if(data.jumlahSuaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.jumlahSeluruhSuaraSah))){
+            errors.jumlahSuaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
         }
-        if(data.totalSuaraSahTidakSah != data.penggunaHakPilih){
-            errors.totalSuaraSahTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
+        if(data.jumlahSuaraSahDanTidakSah != data.penggunaHakPilih){
+            errors.jumlahSuaraSahDanTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
         }
         
         return errors;
@@ -259,8 +261,22 @@ const MyForm = () => {
         e.preventDefault();
         const validationErrors = validateForm(formData);
         if (Object.keys(validationErrors).length === 0 && fileError === '') {
-            // Form is valid, perform further actions (e.g., submit to server)
-            console.log('Form is valid');
+            
+            const data = new FormData();
+            data.append("data", formData.tps_id);
+            data.append("formImage",formImage);
+            fetch('http://localhost:5000/e-rekap/rekap/', {
+                method: 'POST',
+                body: data
+            }).then(response => response.json())
+            .then(json => console.log(json.data))
+        //     fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
+        // .then(response => response.json())
+        // .then(json => json.data.map((curr) => ({
+        //     id: curr[dataToFetch.id],
+        //     nama: curr[dataToFetch.nama]
+        // })))
+        // .then(res => setRegion(res))
         } else {
             console.log('form is not valid')
             // Form is invalid, display validation errors
@@ -276,7 +292,7 @@ const MyForm = () => {
             {/* <h3>{!client && (
           <p>Oh oh, Not connected to IPFS. Checkout out the logs for errors</p>
         )}</h3> */}
-            <Form onSubmit={handleSubmit} className="mt-4">
+            <Form onSubmit={handleSubmit} method="post" className="mt-4">
                 <Row>
                     <Form.Group className="mb-4" >
                         <Form.Label>Info TPS</Form.Label>
@@ -322,25 +338,25 @@ const MyForm = () => {
                         </Form.Group>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-4" >
+                        <Form.Group className="mb-4" enctype="multipart/form-data">
                             <Form.Label>Data Suara</Form.Label>
                             <Form.Control type="number" placeholder="Suara Sah" className='mb-2' required
-                            name="suaraSah"
-                            value = {formData.suaraSah}
+                            name="jumlahSeluruhSuaraSah"
+                            value = {formData.jumlahSeluruhSuaraSah}
                             onChange = {handleChange}/>
-                            {errors.suaraSah && <span className="error">{errors.suaraSah}</span>}
+                            {errors.jumlahSeluruhSuaraSah && <span className="error">{errors.jumlahSeluruhSuaraSah}</span>}
 
                             <Form.Control type="number" placeholder="Suara Tidak Sah" className='mb-2' required
-                            name="suaraTidakSah"
-                            value = {formData.suaraTidakSah}
+                            name="jumlahSuaraTidakSah"
+                            value = {formData.jumlahSuaraTidakSah}
                             onChange = {handleChange}/>
-                            {errors.suaraTidakSah && <span className="error">{errors.suaraTidakSah}</span>}
+                            {errors.jumlahSuaraTidakSah && <span className="error">{errors.jumlahSuaraTidakSah}</span>}
 
                             <Form.Control type="number" placeholder="Total Suara Sah & Tidak Sah" className='mb-2' required
-                            name="totalSuaraSahTidakSah"
-                            value = {formData.totalSuaraSahTidakSah}
+                            name="jumlahSuaraSahDanTidakSah"
+                            value = {formData.jumlahSuaraSahDanTidakSah}
                             onChange = {handleChange}/>
-                            {errors.totalSuaraSahTidakSah && <span className="error">{errors.totalSuaraSahTidakSah}</span>}
+                            {errors.jumlahSuaraSahDanTidakSah && <span className="error">{errors.jumlahSuaraSahDanTidakSah}</span>}
                         </Form.Group>
                     </Col>
                     <input type="file" name="formImage" className="mb-3" required

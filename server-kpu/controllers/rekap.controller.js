@@ -19,22 +19,33 @@ const contract = new web3.eth.Contract(
 
 const createRecapitulation = async (req, res, next) => {
     try {
-        const { tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
-            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage } = req.body;
-        const tx = contract.methods.storeVoteResult(
-            tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
-            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage
-        );
-        const receipt = await tx
-            .send({
-                from: signer.address,
-                gas: 138041,
-            })
-        console.log(`Mined in block ${receipt.blockNumber}`);
+        // console.log(req)
+        console.log(req.file)
+        console.log(req.body)
+        // const { tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
+        //     jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage } = req.body;
+        // const { formImage } = req.body.file
+        // const body = req.body;
+        // console.log(body)
         return res.status(201).json({
             message: 'recapitulation created successfully',
-            data: receipt
+            data: req.body,
+            file: req.file
         })
+        // const tx = contract.methods.storeVoteResult(
+        //     tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
+        //     jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage
+        // );
+        // const receipt = await tx
+        //     .send({
+        //         from: signer.address,
+        //         gas: 138041,
+        //     })
+        // console.log(`Mined in block ${receipt.blockNumber}`);
+        // return res.status(201).json({
+        //     message: 'recapitulation created successfully',
+        //     data: receipt
+        // })
     } catch (err) {
         next(err);
     }
