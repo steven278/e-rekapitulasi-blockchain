@@ -449,3 +449,28 @@ export default MyForm;
 //         </Container>
 //     )
 // }
+
+//----------------------------------------------------------------
+//cara orang di medium https://medium.com/swlh/interacting-with-smartcontracts-via-web3-js-367ea980652c
+// web3.eth.getTransactionCount(account1, (err, txCount) => {
+//     // Build the transaction
+//       const txObject = {
+//         nonce:    web3.utils.toHex(txCount),
+//         to:       contract_Address,
+//         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
+//         gasLimit: web3.utils.toHex(2100000),
+//         gasPrice: web3.utils.toHex(web3.utils.toWei('6', 'gwei')),
+//         data: myData  
+//       }
+//         // Sign the transaction
+//         const tx = new Tx(txObject);
+//         tx.sign(privateKey1);
+    
+//         const serializedTx = tx.serialize();
+//         const raw = '0x' + serializedTx.toString('hex');
+    
+//         // Broadcast the transaction
+//         const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
+//             console.log(tx)
+//         });
+//     });
