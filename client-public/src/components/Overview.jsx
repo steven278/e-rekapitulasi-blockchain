@@ -8,11 +8,12 @@ import ViewRecap from './ViewRecap';
 
 const OverviewTable = () => {
     const [viewRecap, setViewRecap] = useState(false)
+    const [regionId, setRegionId] = useState('');
     return (
         <Container>
             <Row>
-                {viewRecap == true && <ViewRecap/>}
-                {viewRecap == false && <RegionTable recapState={setViewRecap} />}
+                {viewRecap == true && <ViewRecap regionId={regionId}/>}
+                {viewRecap == false && <RegionTable recapState={setViewRecap} setRegionId={setRegionId} regionId={regionId} />}
             </Row>
         </Container>
     );

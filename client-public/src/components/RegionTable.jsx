@@ -1,9 +1,9 @@
 import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
-const RegionTable = ({recapState}) => {
+const RegionTable = ({recapState, setRegionId, regionId}) => {
     const [dataToFetch, setDataToFectch] = useState({id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'});
     const [region, setRegion] = useState([]);
-    const [regionId, setRegionId] = useState('');
+    
 
     const fetchRegionDetail = async (id) => {
         if(id.length == 2){
@@ -16,9 +16,10 @@ const RegionTable = ({recapState}) => {
             setDataToFectch({id: 'id_TPS', nama: 'no_TPS', region: 'tps'})
         }else{
             recapState(true)
-            setViewRecap(true);
         }
+        console.log('ha')
         setRegionId(id)
+        console.log(regionId)
     }
     useEffect(() => {
         fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)

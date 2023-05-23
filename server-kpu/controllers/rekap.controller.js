@@ -1,5 +1,3 @@
-const { Province, City, District, SubDistrict, Tps } = require('../models');
-
 const Web3 = require('web3');
 const { compiledContract } = require('../helper/RekapContract');
 const web3 = new Web3(new Web3.providers.HttpProvider(
@@ -27,15 +25,18 @@ const createRecapitulation = async (req, res, next) => {
             jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage
         );
         // web3.eth.accounts.wallet.add(accounts);
+        // await tx.send({ from: accounts, gas: 138041 })
         const receipt = await tx
             .send({
                 from: accounts,
                 gas: 138041,
+                gasPrice: 2500000
             })
-        console.log(`Mined in block ${receipt.blockNumber}`);
+        // console.log(receipt)
+        // console.log(`Mined in block ${receipt.blockNumber}`);
         return res.status(201).json({
             message: 'recapitulation created successfully',
-            data: receipt
+            data: 'aaa'
         })
     } catch (err) {
         next(err);

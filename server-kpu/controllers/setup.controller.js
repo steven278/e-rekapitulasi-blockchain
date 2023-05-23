@@ -42,7 +42,7 @@ const registerWallet = async (req, res, next) => {
         // const receipt = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101).call();
         // Issuing a transaction that calls the `echo` method
         // // const tx = contract.methods.owner.call().call()
-        const tx = contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101);
+        const tx = contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200102);
         const receipt = await tx
             .send({
                 from: signer.address,
