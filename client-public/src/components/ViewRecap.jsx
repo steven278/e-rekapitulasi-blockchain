@@ -4,14 +4,27 @@ import Container from 'react-bootstrap/Container';
 const ViewRecap = ({regionId}) => {
     console.log(regionId, typeof(regionId))
     const [recapResult, setRecapResult] = useState([]);
+    const [txnHash, setTxnHash] = useState([]);
     useEffect(() => {
         fetch(`http://localhost:5000/e-rekap/rekap/${regionId}`)
         .then(response => response.json())
-        .then(res => setRecapResult(res.data))
+        .then(res => {
+            setRecapResult(res.data)
+            setTxnHash(res.txn_hash)
+        })
+        fetch(`http://localhost:5000/e-rekap/rekap/110101200103`, {
+            method: 'PUT',
+            // headers: {
+            //     'Content-Type': 'application/json; charset=utf-8',
+            // },
+            body: { txn_hash: "0x4eb694c8fb8b4a41ee6497c58f37f15d2b90bc461736514d119ac6f3ae341936" }
+        })
+        .then(data => console.log(data))
     }, [])
     return(
         <Container>
             <h3 className="mt-4">Data Pemilih dan Penggunaan Hak Pilih</h3>
+            <h5>ID TPS: {regionId}</h5> 
             <Table striped bordered hover className='mt-3'>
                 <thead className="bg-dark text-light">
                     <tr>
@@ -70,10 +83,12 @@ const ViewRecap = ({regionId}) => {
                     </tr>
                 </tbody>
             </Table>
-            <h4>KPPS Wallet Address on etherscan</h4>
+            <h4>Transaction Hash on Etherscan</h4>
+            <a href={`https://sepolia.etherscan.io/tx/${txnHash}`} target="_blank">Transaction Hash</a>
+            <h4>KPPS Wallet Address on Etherscan</h4>
             <a href={`https://sepolia.etherscan.io/address/${recapResult[8]}`} target="_blank">Address KPPS</a>
             <h4>URL Form C1 on IPFS</h4>
-            <a href={`https://e-rekap.infura-ipfs.io/ipfs/${recapResult[9]}`} target="_blank">lihat form c1</a>
+            <a href={`https://e-rekap.infura-ipfs.io/ipfs/${recapResult[9]}`} target="_blank">View form c1</a>
         </Container>
     )
 }

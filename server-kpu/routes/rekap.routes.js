@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { upload } = require('../helper/upload')
-const { getAllRecapitulation, getRecapitulationById, createRecapitulation } = require('../controllers/rekap.controller')
+const { getRecapitulationById, createRecapitulation, storeTxnHash } = require('../controllers/rekap.controller')
 
-router.get('/', getAllRecapitulation)
 router.get('/:id', getRecapitulationById);
 router.post('/', upload.single('formImage'), createRecapitulation);
+router.put('/:id', storeTxnHash);
 
 module.exports = router;

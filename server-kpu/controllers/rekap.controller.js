@@ -1,3 +1,4 @@
+const { Tps } = require('../models');
 const Web3 = require('web3');
 const { compiledContract } = require('../helper/RekapContract');
 const web3 = new Web3(new Web3.providers.HttpProvider(
@@ -43,21 +44,38 @@ const createRecapitulation = async (req, res, next) => {
     }
 }
 
-const getAllRecapitulation = async (req, res, next) => {
-    return res.status(200).json({
-        status: 'success',
-        data: 'get all recapitulation'
-    })
+const storeTxnHash = async (req, res, next) => {
+    try {
+        const id_TPS = req.params.id
+        const { txn_hash } = req.body;
+
+        const data = await Tps.update(
+            { txn_hash },
+            {
+                where: { id_TPS },
+                plain: true,
+                returning: true,
+            }
+        )
+        if (!data) throw new Error(`Failed to store txn_hash`);
+        return res.status(200).json({
+            message: 'txn_hash stored in db',
+            data: data
+        })
+    } catch (err) {
+        next(err);
+    }
 }
 
 const getRecapitulationById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const tx = await contract.methods.getRecapitulationByTpsId(id).call();
-        // console.log(tx)
+        const tps = await Tps.findOne({ where: { id_TPS: id } })
         return res.status(200).json({
             status: 'success',
-            data: tx
+            data: tx,
+            txn_hash: tps.txn_hash
         })
     } catch (err) {
         next(err);
@@ -65,7 +83,7 @@ const getRecapitulationById = async (req, res, next) => {
 }
 
 module.exports = {
-    getAllRecapitulation,
     getRecapitulationById,
-    createRecapitulation
+    createRecapitulation,
+    storeTxnHash
 }

@@ -1,3 +1,5 @@
+const { Tps } = require('../models')
+
 const Web3 = require('web3');
 // const web3 = new Web3('https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940');
 
@@ -34,6 +36,7 @@ const contract = new web3.eth.Contract(
 
 const registerWallet = async (req, res, next) => {
     try {
+        const { wallet_address, id_TPS } = req.body;
         // console.log(account)
         //wallet dark 2
         // const result = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101)
@@ -42,7 +45,7 @@ const registerWallet = async (req, res, next) => {
         // const receipt = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101).call();
         // Issuing a transaction that calls the `echo` method
         // // const tx = contract.methods.owner.call().call()
-        const tx = contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200102);
+        const tx = contract.methods.registerWalletOfficer(wallet_address, id_TPS);
         const receipt = await tx
             .send({
                 from: signer.address,
@@ -50,6 +53,12 @@ const registerWallet = async (req, res, next) => {
                 // gas: 57457,
                 // gas: await tx.estimateGas(),
             })
+        const storeToDB = await Tps.update(
+            { wallet_address, id_TPS },
+            {
+                where: { id_TPS }
+            }
+        )
         // .once("Increment", (txhash) => {
         //     console.log(`Mining transaction ...`);
         //     console.log(`https://sepolia.etherscan.io/tx/${txhash}`);
@@ -57,6 +66,7 @@ const registerWallet = async (req, res, next) => {
         // //once itu kalo Subscribes to an event and unsubscribes immediately after the first event or error. Will only fire for a single event.
         // // The transaction is now on chain!
         console.log(`Mined in block ${receipt.blockNumber}`);
+
         // console.log(receipt)
 
         return res.status(201).json({

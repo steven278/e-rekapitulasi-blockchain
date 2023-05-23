@@ -11,14 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      City.belongsTo(models.Province)
+      City.belongsTo(models.Province, {
+        foreignKey: 'id_provinsi'
+      })
       City.hasMany(models.District, {
         foreignKey: 'id_kota'
       })
     }
   }
   City.init({
-    id_kota: DataTypes.STRING,
+    id_kota: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     nama_kota: DataTypes.STRING,
     id_provinsi: DataTypes.STRING
   }, {

@@ -118,6 +118,13 @@ const MyForm = ({accounts}) => {
                     params: [tx]
                 })
                 setTrxResult(txHash);
+                await fetch(`http://localhost:5000/e-rekap/rekap/${formData.tps_id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: {txn_hash: trxResult}
+                })
             }catch(err){
                 console.log(err)
                 setTrxError(err);
@@ -212,8 +219,8 @@ const MyForm = ({accounts}) => {
                     Submit
                 </Button>
             </Form>    
-            {trxResult && <h3>{trxResult}</h3>}
-            {trxError && <h3>{trxError}</h3>}
+            {trxResult && <h5>{trxResult}</h5>}
+            {trxError && <h5>{trxError}</h5>}
         </Container>
     )
 }

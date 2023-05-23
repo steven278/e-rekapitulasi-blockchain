@@ -17,9 +17,7 @@ const RegionTable = ({recapState, setRegionId, regionId}) => {
         }else{
             recapState(true)
         }
-        console.log('ha')
         setRegionId(id)
-        console.log(regionId)
     }
     useEffect(() => {
         fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
