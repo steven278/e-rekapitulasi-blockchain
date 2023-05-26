@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand&family=Rubik&display=swap');
+
+.container{
+    font-family:opensans,sans-serif;
+}
+
+.card{
+    border-radius:2rem;
+    box-shadow: 4px 4px 12px 0px rgba(0,0,0,0.2);
+}
+
+.card-img{
+    width:20vh;
+    margin: 1rem auto 0;
+}
+
+.card-body{
+    display:flex;
+    justify-content: center;
+}
+
+.card-body .btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+    padding: 1em 2em;
+    border: 0;
+}
+
+.login-wrapper{
+    margin-top: 1.5rem;
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius:1rem;
+}
+
+.welcome{
+    display:flex;
+    justify-content: center;
+    margin: 1rem auto;
+}

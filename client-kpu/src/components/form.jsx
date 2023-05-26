@@ -13,6 +13,7 @@ import { create, CID } from "ipfs-http-client";
 import {Buffer} from 'buffer';
 
 const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
+// const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI,"0x2488B908e0E1A0160d8C633D5deA40934252B479");
@@ -118,7 +119,8 @@ const MyForm = ({accounts}) => {
                     params: [tx]
                 })
                 setTrxResult(txHash);
-                await fetch(`http://localhost:5000/e-rekap/rekap/${formData.tps_id}`, {
+                const tpsId = formData.tps_id.toString();
+                await fetch(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -219,8 +221,8 @@ const MyForm = ({accounts}) => {
                     Submit
                 </Button>
             </Form>    
-            {trxResult && <h5>{trxResult}</h5>}
-            {trxError && <h5>{trxError}</h5>}
+            {/* {trxResult && <h5>{trxResult}</h5>}
+            {trxError && <h5>{trxError}</h5>} */}
         </Container>
     )
 }

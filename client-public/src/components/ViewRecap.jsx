@@ -9,15 +9,9 @@ const ViewRecap = ({regionId}) => {
         fetch(`http://localhost:5000/e-rekap/rekap/${regionId}`)
         .then(response => response.json())
         .then(res => {
+            console.log(res)
             setRecapResult(res.data)
             setTxnHash(res.txn_hash)
-        })
-        fetch(`http://localhost:5000/e-rekap/rekap/110101200103`, {
-            method: 'PUT',
-            // headers: {
-            //     'Content-Type': 'application/json; charset=utf-8',
-            // },
-            body: { txn_hash: "0x4eb694c8fb8b4a41ee6497c58f37f15d2b90bc461736514d119ac6f3ae341936" }
         })
         .then(data => console.log(data))
     }, [])

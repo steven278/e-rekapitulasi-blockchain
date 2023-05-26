@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Web3 from 'web3';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import Pemilu2019 from '../assets/pemilu.jpeg'
 
 // function Login() {
 //     const [balance, setBalance] = useState('');
@@ -98,14 +100,23 @@ const Login = ({setAccounts, accounts}) => {
                 {/* Your logged-in content goes here */}
             </div>
             ) : (
-            <div className='mt-5'>
-                <Button onClick={(e) => {
-                            connetWallet()
-                }}>Login with Metamask</Button>
-                <h2>Login with MetaMask</h2>
-                <p>Please install and connect MetaMask to continue.</p>
-            </div>
+                <Container className="login-wrapper">
+                    <div className="welcome">
+                        <h3 >Welcome to E-Rekapitulasi</h3>
+                    </div>
+                    <Card style={{ width: '30vw' }}>
+                        
+                        <Card.Img  src={Pemilu2019} />
+                        <Card.Title className="mx-auto mt-5">Login with Metamask</Card.Title>
+                        <Card.Body>
+                        <Button onClick={(e) => {
+                                connetWallet()
+                        }}>Connect Wallet</Button>
+                        </Card.Body>
+                    </Card>
+                </Container>
             )}
+             
         </Container>
         );
     };

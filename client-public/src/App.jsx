@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from './components/Navbar'
 import OverviewTable from './components/Overview';
 import fetchData from './components/fetchData'
+import dotenv from 'dotenv'
 
 function App() {
   // const [provinces, setProvince] = useState([]);

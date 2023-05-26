@@ -21,6 +21,9 @@ const { compiledContract } = require('../helper/RekapContract');
 const web3 = new Web3(new Web3.providers.HttpProvider(
     `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`
 ));
+// const web3 = new Web3(new Web3.providers.HttpProvider(
+//     `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`
+// ));
 
 // Creating a signing account from a private key
 const signer = web3.eth.accounts.privateKeyToAccount(
