@@ -2,29 +2,21 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Pemilu2019 from '../assets/pemilu.jpeg'
 
-const MyNavbar = () => {
+const MyNavbar = ({accounts}) => {
     return (
         <Navbar bg="danger" expand="lg" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">E-Rekapitulasi KPU</Navbar.Brand>
+                <Navbar.Brand href="#home">
+                    <img src={Pemilu2019} style={{width: '1.25rem', margin: '0 1rem 0 0'}} alt="" />
+                    E-Rekapitulasi KPU
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#link">Link</Nav.Link>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">
-                        Separated link
-                    </NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
+                <Navbar.Collapse className="justify-content-end">
+                    <Navbar.Text style={{color: 'white'}}>
+                        {accounts[0] && <span>Connected : {accounts}</span>}
+                    </Navbar.Text>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

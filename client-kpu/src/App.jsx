@@ -10,12 +10,11 @@ import Button from 'react-bootstrap/Button';
 
 function App() {
   const [accounts, setAccounts] = useState([]);
-
   return (
     <div className="App">
-        <MyNavbar/>
+        <MyNavbar accounts={accounts}/>
         <Login setAccounts={setAccounts} accounts={accounts}/>
-        {accounts[0] ? (<MyForm accounts={accounts}/>) : (<div></div>)}
+        {accounts[0] ? (<MyForm accounts={accounts} />) : (<div></div>)}
       </div>
   )
 }

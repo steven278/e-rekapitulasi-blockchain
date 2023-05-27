@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Pemilu2019 from '../assets/pemilu.jpeg'
+import MetamaskLogo from '../assets/metamask-logo.svg'
 
 // function Login() {
 //     const [balance, setBalance] = useState('');
@@ -91,9 +92,10 @@ const Login = ({setAccounts, accounts}) => {
     return (
         <Container>
             {accounts[0] ? (
-            <div className='mt-5'>
-                <h2>Logged in with MetaMask!</h2>
-                <p>Account: {accounts[0]}</p>
+            <div className='mt-4 mb-4 form-title'>
+                <h3>Form Input Hasil Rekapitulasi Perhitungan Suara</h3>
+                {/* <h2>Logged in with MetaMask!</h2>
+                <p>Account: {accounts[0]}</p> */}
                 {/* <Button onClick={(e) => {
                             handleDisconnect()
                 }}>Disconnect Wallet</Button> */}
@@ -111,7 +113,7 @@ const Login = ({setAccounts, accounts}) => {
                         <Card.Body>
                         <Button onClick={(e) => {
                                 connetWallet()
-                        }}>Connect Wallet</Button>
+                        }}> <span><img src={MetamaskLogo} style={{width: '1.75em'}}/> Connect Wallet</span></Button>
                         </Card.Body>
                     </Card>
                 </Container>

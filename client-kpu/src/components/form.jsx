@@ -77,8 +77,11 @@ const MyForm = ({accounts}) => {
     const validateForm = (data) => {
         setErrors({})
         const errors = {};
+        if(parseInt(data.pemilihTerdaftar) > 300){
+            errors.pemilihTerdaftar = "jumlah pemilih terdaftar tidak boleh melebihi 300";
+        }
         if(data.penggunaHakPilih > data.pemilihTerdaftar){
-            errors.penggunaHakPilih = "pengguna hak pilih tidak boleh lebih besar dari pemilh terdaftar"
+            errors.penggunaHakPilih = "pengguna hak pilih tidak boleh melebihi pemilh terdaftar"
         }
         if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
             errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
@@ -139,7 +142,7 @@ const MyForm = ({accounts}) => {
     }
 
     return (
-        <Container className="mt-3">
+        <Container className="mt-4">
             {/* <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button> */}
             {/* <h3>Account balance: {location.state.balance} Wei</h3>
             <h3>Account address: {location.state.address} </h3> */}
@@ -148,78 +151,95 @@ const MyForm = ({accounts}) => {
         )}</h3> */}
             <Form onSubmit={handleSubmit} method="post"  encType="multipart/form-data" className="mt-4">
                 <Row>
-                    <Form.Group className="mb-4" >
-                        <Form.Label>ID TPS</Form.Label>
-                        <Form.Control type="number" placeholder="ID TPS" className='mb-2' required
-                        name="tps_id"
-                        value = {formData.tps_id}
-                        onChange = {handleChange} />
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-4">
-                            <Form.Label>Data Pemilih</Form.Label>
-
-                            <Form.Control type="number" placeholder="Pemilih Terdaftar" className='mb-2'  required 
+                    <Col className="form-col">
+                        <h5>Info TPS</h5>
+                        <Form.Group className="mt-4" >
+                            <Form.Label>ID TPS</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='mb-2' required
+                            name="tps_id"
+                            value = {formData.tps_id}
+                            onChange = {handleChange} />
+                        </Form.Group>
+                    </Col>
+                    <Col className='form-col'>
+                        <h5>Data Pemilih</h5>
+                        <Form.Group className="mt-4">
+                            {/* <Form.Label>Data Pemilih</Form.Label> */}
+                            <Form.Label>Pemilih Terdaftar</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='mb-2'  required 
                             name="pemilihTerdaftar"
                             value = {formData.pemilihTerdaftar}
                             onChange = {handleChange}/>
                             {errors.pemilihTerdaftar && <span className="error">{errors.pemilihTerdaftar}</span>}
-
-                            <Form.Control type="number" placeholder="Pengguna Hak Pilih" className='mb-2'  required 
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Pengguna Hak Pilih</Form.Label>
+                            <Form.Control type="number" placeholder="0" className=''  required 
                             name="penggunaHakPilih"
                             value = {formData.penggunaHakPilih}
                             onChange = {handleChange}/>
                             {errors.penggunaHakPilih && <span className="error">{errors.penggunaHakPilih}</span>}
                         </Form.Group>
                     </Col>
-                    <Col>
-                        <Form.Group className="mb-4" >
-                            <Form.Label>Perolehan Suara Sah</Form.Label>
-
-                            <Form.Control type="number" placeholder="Paslon 01" className='mb-2'  required
+                    <Col className="form-col">
+                        <h5>Perolehan Suara Sah</h5>
+                        <Form.Group className="mt-4" >
+                            <Form.Label>Paslon 01</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='mb-2'  required
                             name="suaraPaslon1"
                             value = {formData.suaraPaslon1}
                             onChange = {handleChange}/>
-                            {errors.suaraPaslon1 && <span className="error">{errors.suaraPaslon1}</span>}
-
-                            <Form.Control type="number" placeholder="Paslon 02" className='mb-2'  required
+                            {errors.suaraPaslon2 && <span className="error">{errors.suaraPaslon2}</span>}
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Paslon 02</Form.Label>
+                            <Form.Control type="number" placeholder="0" className=''  required
                             name="suaraPaslon2"
                             value = {formData.suaraPaslon2}
                             onChange = {handleChange}/>
                             {errors.suaraPaslon2 && <span className="error">{errors.suaraPaslon2}</span>}
-                        </Form.Group>
+                            </Form.Group>
                     </Col>
-                    <Col>
-                        <Form.Group className="mb-4">
-                            <Form.Label>Data Suara</Form.Label>
-                            <Form.Control type="number" placeholder="Suara Sah" className='mb-2' required
+                    <Col className="form-col">
+                        <h5>Data Suara</h5>
+                        <Form.Group className="mt-4">
+                            <Form.Label>Suara Sah</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='mb-2' required
                             name="jumlahSeluruhSuaraSah"
                             value = {formData.jumlahSeluruhSuaraSah}
                             onChange = {handleChange}/>
                             {errors.jumlahSeluruhSuaraSah && <span className="error">{errors.jumlahSeluruhSuaraSah}</span>}
-
-                            <Form.Control type="number" placeholder="Suara Tidak Sah" className='mb-2' required
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Suara Tidak Sah</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='mb-2' required
                             name="jumlahSuaraTidakSah"
                             value = {formData.jumlahSuaraTidakSah}
                             onChange = {handleChange}/>
                             {errors.jumlahSuaraTidakSah && <span className="error">{errors.jumlahSuaraTidakSah}</span>}
-
-                            <Form.Control type="number" placeholder="Total Suara Sah & Tidak Sah" className='mb-2' required
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Total Suara Sah & Tidak Sah</Form.Label>
+                            <Form.Control type="number" placeholder="0" className='' required
                             name="jumlahSuaraSahDanTidakSah"
                             value = {formData.jumlahSuaraSahDanTidakSah}
                             onChange = {handleChange}/>
                             {errors.jumlahSuaraSahDanTidakSah && <span className="error">{errors.jumlahSuaraSahDanTidakSah}</span>}
                         </Form.Group>
                     </Col>
-                    <input type="file" name="formImage" className="mb-3" required
-                    onChange={handleFileChange}/>
-                    {fileError && <span className="error">{fileError}</span>}
+                    {/* <input type="file" name="formImage" className="mb-3 mt-4" required
+                    onChange={handleFileChange}/> */}
+                    <div class="mb-3 mt-4">
+                        <h5>Upload form C1</h5>
+                        <input name="formImage" class="form-control" type="file" id="formFile" required onChange={handleFileChange}/>
+                        {fileError && <span className="error">{fileError}</span>}
+                    </div>
                 </Row>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
+                <Row className="submit-form-wrapper mt-2 mb-4">
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Row>
             </Form>    
             {/* {trxResult && <h5>{trxResult}</h5>}
             {trxError && <h5>{trxError}</h5>} */}

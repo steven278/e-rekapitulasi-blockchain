@@ -1,11 +1,15 @@
 import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { useState, useEffect } from 'react';
-const RegionTable = ({recapState, setRegionId, regionId}) => {
+const RegionTable = ({recapState, setRegionId, regionId, currentRegion, setCurrentRegion}) => {
     const [dataToFetch, setDataToFectch] = useState({id: 'id_provinsi', nama: 'nama_provinsi', region: 'province'});
-    const [region, setRegion] = useState([]);
+    const [region1, setRegion1] = useState([]);
+    const [region2, setRegion2] = useState([]);
     
 
-    const fetchRegionDetail = async (id) => {
+    const fetchRegionDetail = async (id, nama) => {
         if(id.length == 2){
             setDataToFectch({id: 'id_kota', nama: 'nama_kota', region: 'city'})
         }else if(id.length == 4){
@@ -18,6 +22,7 @@ const RegionTable = ({recapState, setRegionId, regionId}) => {
             recapState(true)
         }
         setRegionId(id)
+        setCurrentRegion(current => [...current, nama])
     }
     useEffect(() => {
         fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
@@ -26,31 +31,57 @@ const RegionTable = ({recapState, setRegionId, regionId}) => {
             id: curr[dataToFetch.id],
             nama: curr[dataToFetch.nama]
         })))
-        .then(res => setRegion(res))
+        .then(res => {
+            const middleIndex = Math.ceil(res.length / 2);
+            const column1Data = res.slice(0, middleIndex);
+            const column2Data = res.slice(middleIndex);
+            setRegion1(column1Data);
+            setRegion2(column2Data);
+        })
     }, [dataToFetch])
 
     return (
-        <Table striped bordered hover className='mt-3'>
-            <thead>
-                <tr>
-                    <th>Wilayah</th>
-                    <th>Paslon 01</th>
-                    <th>Paslon 02</th>
-                </tr>
-            </thead>
-            <tbody>
-                {region.map(item => (   
-                    <tr>
-                        <td><a href="#" onClick={(e) => {
-                            e.preventDefault();
-                            fetchRegionDetail(item.id)}
-                            }>{item.nama}</a></td>
-                        <td>10</td>
-                        <td>10</td>
-                    </tr>
-                ))}
-            </tbody>
-        </Table>
+        <Row>
+            <Col>
+                <Table striped bordered hover className='mt-3 region-table rounded' >
+                    <thead className="bg-dark text-light">
+                        <tr>
+                            <th>Wilayah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {region1.map(item => (   
+                            <tr>
+                                <td><a href="#" onClick={(e) => {
+                                    e.preventDefault();
+                                    fetchRegionDetail(item.id, item.nama)}
+                                    }>{item.nama}</a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Col>
+            <Col>
+                <Table striped bordered hover className='mt-3 region-table' >
+                    <thead className="bg-dark text-light">
+                        <tr>
+                            <th>Wilayah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {region2.map(item => (   
+                            <tr>
+                                <td><a href="#" onClick={(e) => {
+                                    e.preventDefault();
+                                    fetchRegionDetail(item.id, item.nama)}
+                                    }>{item.nama}</a></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Col>
+        </Row>
     )
 }
 
