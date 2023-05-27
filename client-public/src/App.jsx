@@ -3,6 +3,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from './components/Navbar'
 import OverviewTable from './components/Overview';
+import Footer from './components/Footer'
 import fetchData from './components/fetchData'
 import dotenv from 'dotenv'
 
@@ -13,6 +14,7 @@ function App() {
       <MyNavbar/>
       {/* <OverviewTable data={provinces}/> */}
       <OverviewTable/>
+      <Footer/>
     </div>
   )
 }
