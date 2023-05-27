@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Tps } = require('../models')
 
 const Web3 = require('web3');
@@ -18,22 +19,23 @@ const { compiledContract } = require('../helper/RekapContract');
 // Create an instance of the deployed contract
 // const contract = new web3.eth.Contract(compiledContract, "0xF89f2e69405C721C230af7948Da989b1D0bBA1F6");
 
-const web3 = new Web3(new Web3.providers.HttpProvider(
-    `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`
-));
 // const web3 = new Web3(new Web3.providers.HttpProvider(
-//     `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`
+//     process.env.ALCHEMY_WEB3_PROVIDER
 // ));
+
+const web3 = new Web3(new Web3.providers.HttpProvider(
+    process.env.INFURA_WEB3_PROVIDER
+));
 
 // Creating a signing account from a private key
 const signer = web3.eth.accounts.privateKeyToAccount(
-    "0x3df117fd8be7bb7c26c01e455753146c9f6a1c21f789bfc8c97f2edf8513db17"
+    process.env.SIGNER_PRIVATE_KEY
 );
 web3.eth.accounts.wallet.add(signer);
 // Creating a Contract instance
 const contract = new web3.eth.Contract(
     compiledContract,
-    "0x2488B908e0E1A0160d8C633D5deA40934252B479"
+    process.env.CONTRACT_ADDRESS
 );
 
 

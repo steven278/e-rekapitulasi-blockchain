@@ -1,11 +1,12 @@
+require('dotenv').config();
 const { Tps } = require('../models');
 const Web3 = require('web3');
 const { compiledContract } = require('../helper/RekapContract');
 const web3 = new Web3(new Web3.providers.HttpProvider(
-    `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`
+    process.env.INFURA_WEB3_PROVIDER
 ));
 // const web3 = new Web3(new Web3.providers.HttpProvider(
-//     `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`
+//     process.env.ALCHEMY_WEB3_PROVIDER
 // ));
 
 // Creating a signing account from a private key
@@ -16,7 +17,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider(
 // Creating a Contract instance
 const contract = new web3.eth.Contract(
     compiledContract,
-    "0x2488B908e0E1A0160d8C633D5deA40934252B479"
+    process.env.CONTRACT_ADDRESS
 );
 
 const createRecapitulation = async (req, res, next) => {
@@ -49,9 +50,10 @@ const createRecapitulation = async (req, res, next) => {
 
 const storeTxnHash = async (req, res, next) => {
     try {
+        // console.log('ajlajla')
         const id_TPS = req.params.id
         const { txn_hash } = req.body;
-
+        // console.log(req.body)
         const data = await Tps.update(
             { txn_hash },
             {
@@ -60,7 +62,7 @@ const storeTxnHash = async (req, res, next) => {
                 returning: true,
             }
         )
-        if (!data) throw new Error(`Failed to store txn_hash`);
+        if (data[0] == 0) throw new Error(`Failed to store txn_hash`);
         return res.status(200).json({
             message: 'txn_hash stored in db',
             data: data

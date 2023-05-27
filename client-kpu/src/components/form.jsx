@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
+import { TiTick, TiTickOutline } from 'react-icons/ti';
+import {  ImCross } from 'react-icons/im';
+import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
 // import { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
 import contractABI from './contractABI';
@@ -15,8 +19,10 @@ import {Buffer} from 'buffer';
 const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
+const contractAddress = "0x571Bc198EaE4369F8FbE1a01A126F1F690C437Cc"
+
 // Creating a Contract instance
-const contract = new web3.eth.Contract(contractABI,"0x2488B908e0E1A0160d8C633D5deA40934252B479");
+const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 const projectId = "2OvXaQhOP9Jvs0vuyWdvhfnxM3x"; //project id = api key infura ipfs
 const projectSecret = "e3d5291a020c2390698f852eff0efe15" // project secret = api key secret infura ipfs
@@ -48,8 +54,16 @@ const MyForm = ({accounts}) => {
     const [formImage, setFormImage] = useState(null);
     const [errors, setErrors] = useState({});
     const [fileError, setFileError] = useState('');
-    const [trxResult, setTrxResult] = useState(null);
+
     const [trxError, setTrxError] = useState(null);
+    const [trxResult, setTrxResult] = useState('');
+
+    //modal state
+    const [show, setShow] = useState(false);
+
+    // modal handler
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -112,24 +126,21 @@ const MyForm = ({accounts}) => {
                     formData.jumlahSuaraTidakSah, formData.jumlahSuaraSahDanTidakSah, ipfsResult.path).encodeABI();
                 const tx = {
                     from: accounts[0],
-                    to: "0x2488B908e0E1A0160d8C633D5deA40934252B479",
+                    to: contractAddress,
                     data: encoded,
                     gas: "138041",
                     // gasPrice: "0"
                 }
-                const txHash = await window.ethereum.request({
+                const txn_hash = await window.ethereum.request({
                     method: "eth_sendTransaction",
                     params: [tx]
                 })
-                setTrxResult(txHash);
+                console.log(txn_hash)
+                handleShow()
+                setTrxResult(txn_hash)
                 const tpsId = formData.tps_id.toString();
-                await fetch(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: {txn_hash: trxResult}
-                })
+                const res = await axios.put(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {txn_hash});
+                console.log(res)
             }catch(err){
                 console.log(err)
                 setTrxError(err);
@@ -140,6 +151,10 @@ const MyForm = ({accounts}) => {
             setErrors(validationErrors);
         }
     }
+
+    // useEffect(() => {
+    //     handleShow()
+    // }, [trxResult])
 
     return (
         <Container className="mt-4">
@@ -230,9 +245,9 @@ const MyForm = ({accounts}) => {
                     </Col>
                     {/* <input type="file" name="formImage" className="mb-3 mt-4" required
                     onChange={handleFileChange}/> */}
-                    <div class="mb-3 mt-4">
+                    <div className="mb-3 mt-4">
                         <h5>Upload form C1</h5>
-                        <input name="formImage" class="form-control" type="file" id="formFile" required onChange={handleFileChange}/>
+                        <input name="formImage" className="form-control" type="file" id="formFile" required onChange={handleFileChange}/>
                         {fileError && <span className="error">{fileError}</span>}
                     </div>
                 </Row>
@@ -242,6 +257,43 @@ const MyForm = ({accounts}) => {
                     </Button>
                 </Row>
             </Form>    
+            {/* <Button variant="primary" onClick={handleShow}>
+                Launch static backdrop modal
+            </Button> */}
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                style={{margin:'2em'}}
+            >
+                <Modal.Header closeButton>
+                <Modal.Title>Hasil Transaksi</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    {/* <Row>
+                        {trxError == null ?
+                        <TiTick size={80} style={{color:'green'}}/> :
+                        <ImCross size={50} style={{color:'red'}}/> 
+                        }
+                    </Row>
+                    <Row style={{display:'flex', justifyContent: 'center'}}>
+                        {trxError == null ? 'Rekapitulasi Berhasil' : 'Rekapitulasi Gagal'}
+                    </Row> */}
+                    <p className="mt-4" style={{textAlign:'center'}}>Cek Hash Transaksi : <a href={`https://sepolia.etherscan.io/tx/${trxResult}`} target="_blank">Lihat di Etherscan</a> </p>
+                </Modal.Body>
+                
+                
+                {/* <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary">Understood</Button>
+                </Modal.Footer> */}
+            </Modal>
+            {/* {trxResult && <h5>{trxResult}</h5>} */}
             {/* {trxResult && <h5>{trxResult}</h5>}
             {trxError && <h5>{trxError}</h5>} */}
         </Container>

@@ -80,9 +80,9 @@ const Login = ({setAccounts, accounts}) => {
     // };
     useEffect(() => {
         const acc = [];
-        // if(accounts.length == 0) {
-        //     window.localStorage.removeItem('accounts');
-        // }
+        if(accounts.length == 0) {
+            window.localStorage.removeItem('accounts');
+        }
         acc.push(window.localStorage.getItem('accounts'));
         if(acc){
             setAccounts(acc);
