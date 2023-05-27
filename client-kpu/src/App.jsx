@@ -14,8 +14,7 @@ function App() {
   return (
     <div className="App">
         <MyNavbar accounts={accounts}/>
-        <Login setAccounts={setAccounts} accounts={accounts}/>
-        {accounts[0] ? (<MyForm accounts={accounts} />) : (<div></div>)}
+        {accounts[0] ? (<MyForm accounts={accounts} />) : <Login setAccounts={setAccounts} accounts={accounts}/>}
         <Footer/>
     </div>
   )

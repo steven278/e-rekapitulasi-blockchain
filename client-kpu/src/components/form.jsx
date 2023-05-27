@@ -143,6 +143,7 @@ const MyForm = ({accounts}) => {
 
     return (
         <Container className="mt-4">
+            <h3 style={{textAlign: 'center'}}>Form Input Hasil Rekapitulasi Perhitungan Suara</h3>
             {/* <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button> */}
             {/* <h3>Account balance: {location.state.balance} Wei</h3>
             <h3>Account address: {location.state.address} </h3> */}
@@ -235,7 +236,7 @@ const MyForm = ({accounts}) => {
                         {fileError && <span className="error">{fileError}</span>}
                     </div>
                 </Row>
-                <Row className="submit-form-wrapper mt-2 mb-4">
+                <Row className="submit-form-wrapper mt-3 mb-4">
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>

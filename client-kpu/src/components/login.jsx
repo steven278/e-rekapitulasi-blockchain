@@ -80,9 +80,9 @@ const Login = ({setAccounts, accounts}) => {
     // };
     useEffect(() => {
         const acc = [];
-        if(accounts.length == 0) {
-            window.localStorage.removeItem('accounts');
-        }
+        // if(accounts.length == 0) {
+        //     window.localStorage.removeItem('accounts');
+        // }
         acc.push(window.localStorage.getItem('accounts'));
         if(acc){
             setAccounts(acc);
@@ -92,15 +92,16 @@ const Login = ({setAccounts, accounts}) => {
     return (
         <Container>
             {accounts[0] ? (
-            <div className='mt-4 mb-4 form-title'>
-                <h3>Form Input Hasil Rekapitulasi Perhitungan Suara</h3>
-                {/* <h2>Logged in with MetaMask!</h2>
-                <p>Account: {accounts[0]}</p> */}
-                {/* <Button onClick={(e) => {
-                            handleDisconnect()
-                }}>Disconnect Wallet</Button> */}
-                {/* Your logged-in content goes here */}
-            </div>
+                <></>
+            // <div className='mt-4 mb-4 form-title'>
+                
+            //     <h2>Logged in with MetaMask!</h2>
+            //     <p>Account: {accounts[0]}</p>
+            //     <Button onClick={(e) => {
+            //                 handleDisconnect()
+            //     }}>Disconnect Wallet</Button>
+            //     Your logged-in content goes here
+            // </div>
             ) : (
                 <Container className="login-wrapper">
                     <div className="welcome">
