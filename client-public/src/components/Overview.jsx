@@ -16,7 +16,7 @@ const OverviewTable = () => {
     return (
         <Container className='mt-2'>
             {currentRegion[0] && <a onClick={() => window.location.reload(false)} href="#"> &lt;&lt; Back to Main Menu</a>}
-            <h4 className="mt-4 page-title">HASIL REKAPITULASI PERHITUNGAN SUARA PEMILU PRESIDEN & WAKIL PRESIDEN RI 2019</h4>
+            <h4 className="mt-4 page-title">Hasil Rekapitulasi Perhitungan Suara Pemilu Presiden & Wakil Presiden RI 2019</h4>
             {currentRegion[0] && <div style={{textAlign: 'center', fontSize: '1.25em'}}>
                 <span className='mx-2 text-secondary'>{currentRegion[0]} </span> <span> - </span>
                 <span className='mx-2 text-secondary'>{currentRegion[1]} </span> <span> - </span>

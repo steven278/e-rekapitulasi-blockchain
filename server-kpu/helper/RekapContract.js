@@ -161,8 +161,6 @@ const compiledContract =
 			"type": "function"
 		}
 	]
-
-
 module.exports = {
 	compiledContract
 }

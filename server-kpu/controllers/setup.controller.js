@@ -24,7 +24,7 @@ const { compiledContract } = require('../helper/RekapContract');
 // ));
 
 const web3 = new Web3(new Web3.providers.HttpProvider(
-    process.env.INFURA_WEB3_PROVIDER
+    "0x3df117fd8be7bb7c26c01e455753146c9f6a1c21f789bfc8c97f2edf8513db17"
 ));
 
 // Creating a signing account from a private key
@@ -129,9 +129,30 @@ const deployContract = async (req, res, next) => {
     }
 }
 
+const prefundWallet = async (req, res, next) => {
+    // console.log(req.body)
+    const { wallets } = (req.body)
+    // for (const wallet in wallets) {
+    //     // console.log(wallets[wallet])
+    //     let nonce = await web3.eth.getTransactionCount("0xEe57103b6F5b4D707C282981dc5bEdA005694a11");
+    //     let tx = {
+    //         "from": "0xEe57103b6F5b4D707C282981dc5bEdA005694a11",
+    //         "to": wallet,
+    //         "value": web3.utils.toHex(web3.utils.toWei(wallets[wallet].toString(), 'ether')),
+    //         "gas": 21000,
+    //         // "gasPrice": gasPrices.low * 1000000000,
+    //         "nonce": nonce,
+    //         "chainId": 4 // EIP 155 chainId - mainnet: 1, rinkeby: 4
+    //     };
+    //     web3.eth.sendTransaction()
+    // }
+
+}
+
 
 
 module.exports = {
     deployContract,
-    registerWallet
+    registerWallet,
+    prefundWallet,
 }
