@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 // import { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
 import contractABI from './contractABI';
@@ -36,7 +37,17 @@ const client = create({
         authorization: auth,
     },
 });
-
+// {
+//     status: true,
+//     transactionHash: "",
+//     transactionIndex: 0,
+//     blockHash: "",
+//     blockNumber: 0,
+//     contractAddress: "",
+//     cumulativeGasUsed: 0,
+//     gasUsed: 0,
+//     logs: []
+// }
 
 
 
@@ -55,8 +66,26 @@ const MyForm = ({accounts}) => {
     const [errors, setErrors] = useState({});
     const [fileError, setFileError] = useState('');
 
+    const [trxResult, setTrxResult] = useState({
+        blockHash: '',
+        blockNumber: 0,
+        contractAddress: null,
+        cumulativeGasUsed: 0,
+        effectiveGasPrice: 0,
+        from: "",
+        gasUsed: 0,
+        logs: [],
+        logsBloom: "",
+        status: false,
+        to: "",
+        transactionHash: "",
+        transactionIndex: 0,
+        type: ""
+    });
     const [trxError, setTrxError] = useState(null);
-    const [trxResult, setTrxResult] = useState('');
+
+    //loader state
+    const [load, setLoad] = useState(false)
 
     //modal state
     const [show, setShow] = useState(false);
@@ -113,6 +142,23 @@ const MyForm = ({accounts}) => {
         return errors;
     }
     
+    // const checkTransactionConfirmation = (txn_hash) => {
+
+    //     let checkTransactionLoop = () => {
+    //         return window.ethereum.request({
+    //             method: "eth_getTransactionReceipt",
+    //             params: [txn_hash]
+    //         }).then(res => {
+    //             if(res != null) return 'confirmed';
+    //             else return checkTransactionLoop();
+    //         })
+    //     }
+    //     return checkTransactionLoop();
+    // }
+    const setModalData = (receipt) => {
+        setTrxResult(receipt) 
+    };
+
     const handleSubmit = async(e) => {
         e.preventDefault();
         const validationErrors = validateForm(formData);
@@ -135,9 +181,26 @@ const MyForm = ({accounts}) => {
                     method: "eth_sendTransaction",
                     params: [tx]
                 })
-                console.log(txn_hash)
-                handleShow()
-                setTrxResult(txn_hash)
+                
+                // console.log(txn_hash)
+                console.log("Waiting for tx " + txn_hash)
+                let interval = setInterval(() => {
+                    web3.eth.getTransactionReceipt(txn_hash, (err, receipt) => {
+                        if(receipt) {
+                            console.log("Gotten receipt")
+                            if (receipt.status === true) {
+                                console.log(receipt)
+                            } else if (receipt.status === false) {
+                                console.log("Tx failed")
+                            }
+                            // Clear interval
+                            clearInterval(interval)
+                            setModalData(receipt)
+                            console.log(trxResult)
+                            handleShow()
+                        }
+                    })
+                }, 6000)
                 const tpsId = formData.tps_id.toString();
                 const res = await axios.put(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {txn_hash});
                 console.log(res)
@@ -273,29 +336,18 @@ const MyForm = ({accounts}) => {
                 <Modal.Title>Hasil Transaksi</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
-                    {/* <Row>
-                        {trxError == null ?
+                    <Row className='mb-3'>
+                        {trxResult.status == true ?
                         <TiTick size={80} style={{color:'green'}}/> :
                         <ImCross size={50} style={{color:'red'}}/> 
                         }
                     </Row>
                     <Row style={{display:'flex', justifyContent: 'center'}}>
-                        {trxError == null ? 'Rekapitulasi Berhasil' : 'Rekapitulasi Gagal'}
-                    </Row> */}
-                    <p className="mt-4" style={{textAlign:'center'}}>Cek Hash Transaksi : <a href={`https://sepolia.etherscan.io/tx/${trxResult}`} target="_blank">Lihat di Etherscan</a> </p>
+                        {trxResult.status == true ? 'Rekapitulasi Berhasil' : 'Rekapitulasi Gagal'}
+                    </Row>
+                    <h6 className="mt-4" style={{textAlign:'center'}}>Cek Hash Transaksi : <a href={`https://sepolia.etherscan.io/tx/${trxResult.transactionHash}`} target="_blank">Lihat di Etherscan</a> </h6>
                 </Modal.Body>
-                
-                
-                {/* <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary">Understood</Button>
-                </Modal.Footer> */}
             </Modal>
-            {/* {trxResult && <h5>{trxResult}</h5>} */}
-            {/* {trxResult && <h5>{trxResult}</h5>}
-            {trxError && <h5>{trxError}</h5>} */}
         </Container>
     )
 }

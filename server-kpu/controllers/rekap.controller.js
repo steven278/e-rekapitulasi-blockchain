@@ -34,14 +34,16 @@ const createRecapitulation = async (req, res, next) => {
     try {
         console.log('masukkkkkkkkk')
         const { tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
-            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage } = req.body;
+            jumlahSuaraTidakSah, jumlahSuaraSahDanTidakSah, formImage, address } = req.body;
         // const { formImage } = req.file
         // Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-        let num = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-        console.log(num)
-        const t = parseInt(tps_id) + num
-        console.log(t)
+        // let num = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+        // console.log(num)
+        // const t = parseInt(tps_id) + num
+        // console.log(t)
+
         // return t;
+        const addressIndex = parseInt(address)
         // const hex = num.toString(16);
         const tx = contract.methods.storeVoteResult(
             tps_id, pemilihTerdaftar, penggunaHakPilih, suaraPaslon1, suaraPaslon2, jumlahSeluruhSuaraSah,
@@ -55,17 +57,20 @@ const createRecapitulation = async (req, res, next) => {
 
         const receipt = await tx
             .send({
-                from: signer[num].address,
-                // gas: '160000',
+                from: signer[addressIndex].address,
+                // from: signer[0].address,
+                gas: '160000',
+                maxPriorityFeePerGas: web3.utils.toHex(web3.utils.toWei('20.5', 'gwei')),
+                type: "0x02"
                 // gas: '135105',
-                gas: await tx.estimateGas(),
+                // gas: await tx.estimateGas(),
             })
-            .once('sending', (payload) => {
-                console.log('sending')
+            // .once('sending', (payload) => {
+            //     console.log('sending')
 
-                console.log(payload)
-                data.push(payload)
-            })
+            //     console.log(payload)
+            //     data.push(payload)
+            // })
             // .once('sent', (payload) => { // payloadnya sama aja kyk yg sending
             //     console.log('sent')
             //     console.log(payload)
