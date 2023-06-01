@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import { TiTick, TiTickOutline } from 'react-icons/ti';
-import {  ImCross } from 'react-icons/im';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,6 +8,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+
+import FormModal from './FormModal'
+
 // import { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
 import contractABI from './contractABI';
@@ -37,19 +38,6 @@ const client = create({
         authorization: auth,
     },
 });
-// {
-//     status: true,
-//     transactionHash: "",
-//     transactionIndex: 0,
-//     blockHash: "",
-//     blockNumber: 0,
-//     contractAddress: "",
-//     cumulativeGasUsed: 0,
-//     gasUsed: 0,
-//     logs: []
-// }
-
-
 
 const MyForm = ({accounts}) => {
     const [formData, setFormData] = useState({
@@ -82,10 +70,14 @@ const MyForm = ({accounts}) => {
         transactionIndex: 0,
         type: ""
     });
+    const [txHash , setTxHash] = useState('')
     const [trxError, setTrxError] = useState(null);
 
     //loader state
     const [load, setLoad] = useState(false)
+    //loader handler
+    const handleLoadClose = () => setLoad(false);
+    const handleLoadShow = () => setLoad(true);
 
     //modal state
     const [show, setShow] = useState(false);
@@ -120,41 +112,27 @@ const MyForm = ({accounts}) => {
     const validateForm = (data) => {
         setErrors({})
         const errors = {};
-        if(parseInt(data.pemilihTerdaftar) > 300){
-            errors.pemilihTerdaftar = "jumlah pemilih terdaftar tidak boleh melebihi 300";
-        }
-        if(data.penggunaHakPilih > data.pemilihTerdaftar){
-            errors.penggunaHakPilih = "pengguna hak pilih tidak boleh melebihi pemilh terdaftar"
-        }
-        if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
-            errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
-        }
-        if(data.jumlahSeluruhSuaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
-            errors.jumlahSeluruhSuaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
-        }
-        if(data.jumlahSuaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.jumlahSeluruhSuaraSah))){
-            errors.jumlahSuaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
-        }
-        if(data.jumlahSuaraSahDanTidakSah != data.penggunaHakPilih){
-            errors.jumlahSuaraSahDanTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
-        }
+        // if(parseInt(data.pemilihTerdaftar) > 300){
+        //     errors.pemilihTerdaftar = "jumlah pemilih terdaftar tidak boleh melebihi 300";
+        // }
+        // if(data.penggunaHakPilih > data.pemilihTerdaftar){
+        //     errors.penggunaHakPilih = "pengguna hak pilih tidak boleh melebihi pemilh terdaftar"
+        // }
+        // if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
+        //     errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
+        // }
+        // if(data.jumlahSeluruhSuaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
+        //     errors.jumlahSeluruhSuaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
+        // }
+        // if(data.jumlahSuaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.jumlahSeluruhSuaraSah))){
+        //     errors.jumlahSuaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
+        // }
+        // if(data.jumlahSuaraSahDanTidakSah != data.penggunaHakPilih){
+        //     errors.jumlahSuaraSahDanTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
+        // }
         
         return errors;
     }
-    
-    // const checkTransactionConfirmation = (txn_hash) => {
-
-    //     let checkTransactionLoop = () => {
-    //         return window.ethereum.request({
-    //             method: "eth_getTransactionReceipt",
-    //             params: [txn_hash]
-    //         }).then(res => {
-    //             if(res != null) return 'confirmed';
-    //             else return checkTransactionLoop();
-    //         })
-    //     }
-    //     return checkTransactionLoop();
-    // }
     const setModalData = (receipt) => {
         setTrxResult(receipt) 
     };
@@ -181,29 +159,34 @@ const MyForm = ({accounts}) => {
                     method: "eth_sendTransaction",
                     params: [tx]
                 })
-                
-                // console.log(txn_hash)
-                console.log("Waiting for tx " + txn_hash)
+                setTxHash(txn_hash)
+                handleLoadShow()
+                handleShow()
                 let interval = setInterval(() => {
-                    web3.eth.getTransactionReceipt(txn_hash, (err, receipt) => {
+                    console.log('luarrr')
+                    web3.eth.getTransactionReceipt(txn_hash, async (err, receipt) => {
+                        console.log('tengaahhhh')
                         if(receipt) {
+                            // Clear interval
+                            clearInterval(interval)
                             console.log("Gotten receipt")
                             if (receipt.status === true) {
                                 console.log(receipt)
+                                const tpsId = formData.tps_id.toString();
+                                const res = await axios.put(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {txn_hash});
+                                console.log(res)
                             } else if (receipt.status === false) {
                                 console.log("Tx failed")
                             }
-                            // Clear interval
-                            clearInterval(interval)
                             setModalData(receipt)
+                            handleLoadClose()
+                            
+                            console.log(receipt)
                             console.log(trxResult)
-                            handleShow()
+                            
                         }
                     })
                 }, 6000)
-                const tpsId = formData.tps_id.toString();
-                const res = await axios.put(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {txn_hash});
-                console.log(res)
             }catch(err){
                 console.log(err)
                 setTrxError(err);
@@ -215,9 +198,7 @@ const MyForm = ({accounts}) => {
         }
     }
 
-    // useEffect(() => {
-    //     handleShow()
-    // }, [trxResult])
+    
 
     return (
         <Container className="mt-4">
@@ -231,6 +212,7 @@ const MyForm = ({accounts}) => {
             <Form onSubmit={handleSubmit} method="post"  encType="multipart/form-data" className="mt-4">
                 <Row>
                     <Col className="form-col">
+                        
                         <h5>Info TPS</h5>
                         <Form.Group className="mt-4" >
                             <Form.Label>ID TPS</Form.Label>
@@ -319,35 +301,9 @@ const MyForm = ({accounts}) => {
                         Submit
                     </Button>
                 </Row>
-            </Form>    
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch static backdrop modal
-            </Button> */}
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-                style={{margin:'2em'}}
-            >
-                <Modal.Header closeButton>
-                <Modal.Title>Hasil Transaksi</Modal.Title>
-                </Modal.Header>
-                <Modal.Body >
-                    <Row className='mb-3'>
-                        {trxResult.status == true ?
-                        <TiTick size={80} style={{color:'green'}}/> :
-                        <ImCross size={50} style={{color:'red'}}/> 
-                        }
-                    </Row>
-                    <Row style={{display:'flex', justifyContent: 'center'}}>
-                        {trxResult.status == true ? 'Rekapitulasi Berhasil' : 'Rekapitulasi Gagal'}
-                    </Row>
-                    <h6 className="mt-4" style={{textAlign:'center'}}>Cek Hash Transaksi : <a href={`https://sepolia.etherscan.io/tx/${trxResult.transactionHash}`} target="_blank">Lihat di Etherscan</a> </h6>
-                </Modal.Body>
-            </Modal>
+
+            </Form>   
+            <FormModal load={load} show={show} trxResult={trxResult} txHash={txHash} handleClose={handleClose}/>
         </Container>
     )
 }

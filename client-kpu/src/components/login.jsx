@@ -107,7 +107,7 @@ const Login = ({setAccounts, accounts}) => {
                     <div className="welcome">
                         <h3 >Welcome to E-Rekapitulasi</h3>
                     </div>
-                    <Card style={{ width: '30vw' }}>
+                    <Card style={{ width: '30vw' }} className="login-card">
                         
                         <Card.Img  src={Pemilu2019} />
                         <Card.Title className="mx-auto mt-5">Login with Metamask</Card.Title>
