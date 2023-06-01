@@ -179,14 +179,16 @@ const MyForm = ({accounts}) => {
                                 console.log("Tx failed")
                             }
                             setModalData(receipt)
+                            console.log(load)
                             handleLoadClose()
-                            
+                            console.log(load)
                             console.log(receipt)
                             console.log(trxResult)
                             
                         }
                     })
                 }, 6000)
+                console.log(load)
             }catch(err){
                 console.log(err)
                 setTrxError(err);
@@ -209,7 +211,7 @@ const MyForm = ({accounts}) => {
             {/* <h3>{!client && (
           <p>Oh oh, Not connected to IPFS. Checkout out the logs for errors</p>
         )}</h3> */}
-            <Form onSubmit={handleSubmit} method="post"  encType="multipart/form-data" className="mt-4">
+            <Form onSubmit={handleSubmit} method="post"  encType="multipart/form-data" className="mt-4" id='rekap-form'>
                 <Row>
                     <Col className="form-col">
                         
@@ -290,7 +292,7 @@ const MyForm = ({accounts}) => {
                     </Col>
                     {/* <input type="file" name="formImage" className="mb-3 mt-4" required
                     onChange={handleFileChange}/> */}
-                    <div className="mb-3 mt-4">
+                    <div className="mb-3 mt-4 upload-image-wrapper">
                         <h5>Upload form C1</h5>
                         <input name="formImage" className="form-control" type="file" id="formFile" required onChange={handleFileChange}/>
                         {fileError && <span className="error">{fileError}</span>}

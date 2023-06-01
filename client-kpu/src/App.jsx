@@ -6,7 +6,6 @@ import MyNavbar from './components/navbar';
 import MyForm from './components/form';
 import Login from './components/login';
 import Footer from './components/Footer';
-import MyTrx from './components/transaction';
 import Button from 'react-bootstrap/Button';
 
 function App() {

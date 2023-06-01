@@ -135,6 +135,29 @@ const createRecapitulation = async (req, res, next) => {
     }
 }
 
+const checkLogin = async (req, res, next) => {
+    try {
+        const { wallet } = req.params;
+        const options = {
+            attributes: [
+                'id_TPS', 'wallet_address'
+            ],
+            where: { wallet_address: wallet }
+        }
+        const data = await Tps.findOne(options)
+        console.log(data)
+        if (!data) {
+            throw new Error('Your Wallet Address is Not Registered');
+        }
+        return res.status(200).json({
+            status: 'success',
+            data: data
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
 const storeTxnHash = async (req, res, next) => {
     try {
         // console.log('ajlajla')
@@ -177,5 +200,6 @@ const getRecapitulationById = async (req, res, next) => {
 module.exports = {
     getRecapitulationById,
     createRecapitulation,
+    checkLogin,
     storeTxnHash
 }
