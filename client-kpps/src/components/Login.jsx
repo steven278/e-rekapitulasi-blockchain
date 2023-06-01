@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Web3 from 'web3';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +9,39 @@ import Pemilu2019 from '../assets/pemilu.jpeg'
 import MetamaskLogo from '../assets/metamask-logo.svg'
 import Modal from 'react-bootstrap/Modal';
 import { ImCross } from 'react-icons/im';
-import Row from 'react-bootstrap/Row';
+import Row from 'react-bootstrap/Row'
+// function Login() {
+//     const [balance, setBalance] = useState('');
+//     const [address, setAddress] = useState('');
+//     const navigate = useNavigate();
+
+//     async function connectToMetaMask() {
+//         if (window.ethereum) {
+//             try {
+//                 await window.ethereum.request({ method: 'eth_requestAccounts' });
+//                 const web3 = new Web3(window.ethereum);
+//                 const accounts = await web3.eth.getAccounts();
+//                 const balance = await web3.eth.getBalance(accounts[0]);
+//                 setBalance(web3.utils.fromWei(balance, 'ether'));
+//                 navigate('/form', {state:{address : accounts[0], balance}})
+//             } catch (error) {
+//                 console.error(error);
+//             }
+//         } else {
+//             console.error('MetaMask not detected');
+//         }
+//     }
+
+//     return (
+//         <Container className="mt-5">
+//             <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button>
+//             <h3>Account balance: {balance} ETH</h3>
+//             <h3>Account address: {address} ETH</h3>
+//         </Container>
+//     );
+// }
+
+
 
 const Login = ({setAccounts, accounts}) => {
     const [show, setShow] = useState(false);
@@ -50,6 +83,15 @@ const Login = ({setAccounts, accounts}) => {
     //         });
     //     }
     // }
+
+    // const loadWeb3 = async () => {
+    //     if (typeof window.ethereum !== 'undefined') {
+    //         await window.ethereum.enable();
+    //         // Other Web3 initialization code can go here
+    //     } else {
+    //         console.log("Please install MetaMask to use this application.");
+    //     }
+    // };
     useEffect(() => {
         const acc = [];
         if(accounts.length == 0) {
@@ -65,6 +107,15 @@ const Login = ({setAccounts, accounts}) => {
         <Container>
             {accounts[0] ? (
                 <></>
+            // <div className='mt-4 mb-4 form-title'>
+                
+            //     <h2>Logged in with MetaMask!</h2>
+            //     <p>Account: {accounts[0]}</p>
+            //     <Button onClick={(e) => {
+            //                 handleDisconnect()
+            //     }}>Disconnect Wallet</Button>
+            //     Your logged-in content goes here
+            // </div>
             ) : (
                 <Container className="login-wrapper">
                     <div className="welcome mb-2">

@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand&family=Rubik&display=swap');
+
+.container{
+    font-family:'Open Sans', sans-serif;
+}
+
+.card{
+    border-radius:2rem;
+    box-shadow: 4px 4px 12px 0px rgba(0,0,0,0.2);
+}
+
+.card-img{
+    width:20vh;
+    margin: 1rem auto 0;
+}
+
+.card-body{
+    display:flex;
+    justify-content: center;
+}
+
+.card-body .btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+    padding: 1em 2em;
+    border: 0;
+    width: 16rem;
+}
+.card-body .btn span{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.login-wrapper{
+    margin-top: 0.5rem;
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius:1rem;
+}
+
+.welcome{
+    display:flex;
+    justify-content: center;
+    /* margin-left: 1.5rem auto;
+    margin-right: 1.5rem auto; */
+}
+
+.welcome h3{
+    font-size: 2.15vw;
+    font-weight:600;
+}
+
+.form-title{
+    display:flex;
+    justify-content: center;
+}
+.form-title h3{
+    font-weight:600;
+}
+
+/* #rekap-form{
+    border-radius: 1rem;
+    padding: 1rem;
+    padding-bottom: 1.5rem;
+    margin: 0 0.5rem;
+    box-shadow:  0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+} */
+
+.form-col{
+    border-radius: 1rem;
+    padding: 1rem;
+    padding-bottom: 1.5rem;
+    margin: 0 0.5rem;
+    box-shadow:  0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+}
+
+.form-col h5{
+    font-weight: bold;
+    text-align: center;
+}
+
+/* .upload-image-wrapper{
+    border-radius: 1rem;
+    padding: 1rem;
+    padding-bottom: 1.5rem;
+    margin: 0 0.5rem;
+    box-shadow:  0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+} */
+
+.submit-form-wrapper{
+    display:flex;
+    justify-content:center;
+}
+
+.submit-form-wrapper button{
+    width:30%;
+    border-radius: 2rem;
+}
+
+.error{
+    color: red;
+}
+
+.login-modal-close button{
+    background-color: white;
+}

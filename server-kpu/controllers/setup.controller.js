@@ -24,24 +24,47 @@ const { compiledContract } = require('../helper/RekapContract');
 // ));
 
 const web3 = new Web3(new Web3.providers.HttpProvider(
-    "0x3df117fd8be7bb7c26c01e455753146c9f6a1c21f789bfc8c97f2edf8513db17"
+    `${process.env.INFURA_WEB3_PROVIDER}`
 ));
 
 // Creating a signing account from a private key
 const signer = web3.eth.accounts.privateKeyToAccount(
-    process.env.SIGNER_PRIVATE_KEY
+    `${process.env.SIGNER_PRIVATE_KEY}`
 );
 web3.eth.accounts.wallet.add(signer);
 // Creating a Contract instance
 const contract = new web3.eth.Contract(
     compiledContract,
-    process.env.CONTRACT_ADDRESS
+    `${process.env.CONTRACT_ADDRESS}`
 );
 
 
 const registerWallet = async (req, res, next) => {
     try {
-        const { wallet_address, id_TPS } = req.body;
+        const receipts = [];
+        const dbResponses = [];
+        const wallets = req.body;
+        for (const wallet in wallets) {
+            console.log(wallet, wallets[wallet])
+            const tx = contract.methods.registerWalletOfficer(wallets[wallet], parseInt(wallet));
+            const receipt = await tx
+                .send({
+                    from: signer.address,
+                    gas: 53689,
+                    // gas: 57457,
+                    // gas: await tx.estimateGas(),
+                })
+            console.log(receipt)
+            receipts.push(receipt);
+            const storeToDB = await Tps.update(
+                { wallet_address: wallets[wallet], id_TPS: wallet },
+                {
+                    where: { id_TPS }
+                }
+            )
+            console.log(storeToDB)
+            dbResponses.push(storeToDB);
+        }
         // console.log(account)
         //wallet dark 2
         // const result = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101)
@@ -50,33 +73,23 @@ const registerWallet = async (req, res, next) => {
         // const receipt = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101).call();
         // Issuing a transaction that calls the `echo` method
         // // const tx = contract.methods.owner.call().call()
-        const tx = contract.methods.registerWalletOfficer(wallet_address, id_TPS);
-        const receipt = await tx
-            .send({
-                from: signer.address,
-                gas: 53689,
-                // gas: 57457,
-                // gas: await tx.estimateGas(),
-            })
-        const storeToDB = await Tps.update(
-            { wallet_address, id_TPS },
-            {
-                where: { id_TPS }
-            }
-        )
+
+
+
         // .once("Increment", (txhash) => {
         //     console.log(`Mining transaction ...`);
         //     console.log(`https://sepolia.etherscan.io/tx/${txhash}`);
         // });
         // //once itu kalo Subscribes to an event and unsubscribes immediately after the first event or error. Will only fire for a single event.
         // // The transaction is now on chain!
-        console.log(`Mined in block ${receipt.blockNumber}`);
+        // console.log(`Mined in block ${receipt.blockNumber}`);
 
         // console.log(receipt)
 
         return res.status(201).json({
             status: 'success',
-            data: receipt
+            receipts,
+            dbResponses
         })
     } catch (err) {
         next(err);
