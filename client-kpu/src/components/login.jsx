@@ -94,10 +94,10 @@ const Login = ({setAccounts, accounts}) => {
                             <ImCross size={50}/>
                         </Row>
                         <Row className='mt-3 mb-2'>
-                                <h4 className='d-flex justify-content-center text-danger'> Login Failed</h4>
+                            <h4 className='d-flex justify-content-center'> Login Failed</h4>
                         </Row>
-                        <Row className='d-flex justify-content-center'>
-                                Your Wallet Address is Not Registered
+                        <Row className='d-flex justify-content-center text-danger'>
+                            <h6 style={{textAlign: 'center'}}>Your wallet address is not authorized to access this system</h6>
                         </Row>
                     </Modal.Body>
             </Modal>

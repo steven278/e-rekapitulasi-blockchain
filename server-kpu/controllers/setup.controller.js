@@ -43,28 +43,48 @@ const registerWallet = async (req, res, next) => {
     try {
         const receipts = [];
         const dbResponses = [];
-        const wallets = req.body;
-        for (const wallet in wallets) {
-            console.log(wallet, wallets[wallet])
-            const tx = contract.methods.registerWalletOfficer(wallets[wallet], parseInt(wallet));
-            const receipt = await tx
-                .send({
-                    from: signer.address,
-                    gas: 53689,
-                    // gas: 57457,
-                    // gas: await tx.estimateGas(),
-                })
-            console.log(receipt)
-            receipts.push(receipt);
-            const storeToDB = await Tps.update(
-                { wallet_address: wallets[wallet], id_TPS: wallet },
-                {
-                    where: { id_TPS }
-                }
-            )
-            console.log(storeToDB)
-            dbResponses.push(storeToDB);
-        }
+        const fileAddress = req.body;
+        console.log(fileAddress)
+        const updatePromises = Object.keys(fileAddress).map(key => {
+            console.log(key)
+            return Tps.update({ wallet_address: fileAddress[key] }, { where: { id_TPS: key } });
+        });
+
+        await Promise.all(updatePromises);
+        // const data = await Tps.update(
+        //     { txn_hash },
+        //     {
+        //         where: { id_TPS },
+        //         plain: true,
+        //         returning: true,
+        //     }
+        // )
+        // if (data[0] == 0) throw new Error(`Failed to store txn_hash`);
+        // return res.status(200).json({
+        //     message: 'txn_hash stored in db',
+        //     data: data
+        // })
+        // for (const wallet in wallets) {
+        //     console.log(wallet, wallets[wallet])
+        //     const tx = contract.methods.registerWalletOfficer(wallets[wallet], parseInt(wallet));
+        //     const receipt = await tx
+        //         .send({
+        //             from: signer.address,
+        //             gas: 53689,
+        //             // gas: 57457,
+        //             // gas: await tx.estimateGas(),
+        //         })
+        //     console.log(receipt)
+        //     receipts.push(receipt);
+        //     const storeToDB = await Tps.update(
+        //         { wallet_address: wallets[wallet], id_TPS: wallet },
+        //         {
+        //             where: { id_TPS }
+        //         }
+        //     )
+        //     console.log(storeToDB)
+        //     dbResponses.push(storeToDB);
+        // }
         // console.log(account)
         //wallet dark 2
         // const result = await contract.methods.registerWalletOfficer("0xc7f41aFC8002C8DEBC60A9c9812B2f9a02fD92F5", 110101200101)
@@ -86,10 +106,8 @@ const registerWallet = async (req, res, next) => {
 
         // console.log(receipt)
 
-        return res.status(201).json({
-            status: 'success',
-            receipts,
-            dbResponses
+        return res.status(200).json({
+            status: 'Bulk update success',
         })
     } catch (err) {
         next(err);

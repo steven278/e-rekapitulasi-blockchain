@@ -160,17 +160,13 @@ const checkLogin = async (req, res, next) => {
 
 const checkLoginOwner = async (req, res, next) => {
     try {
-        console.log('first')
         const { wallet } = req.params;
         const owner = await contract.methods.owner().call();
 
-        console.log(wallet)
-        console.log(owner)
         if (owner.toLowerCase() !== wallet.toLowerCase()) {
             console.log('second')
-            throw new Error('Your Wallet Address is Not Registered');
+            throw new Error('Your wallet address is not authorized to access this system');
         }
-        console.log('third')
         return res.status(200).json({
             status: 'success',
             data: 'login success'

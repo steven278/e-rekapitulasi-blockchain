@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand&family=Rubik&display=swap');
 
+.App{
+    
+}
+
 .container{
     font-family:'Open Sans', sans-serif;
 }
@@ -7,6 +11,7 @@
 .card{
     border-radius:2rem;
     box-shadow: 4px 4px 12px 0px rgba(0,0,0,0.2);
+    background-color: #ffffff
 }
 
 .card-img{
@@ -80,6 +85,7 @@
     box-shadow:  0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
     -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
     -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
+    background-color: #ffffff;
 }
 
 .form-col h5{

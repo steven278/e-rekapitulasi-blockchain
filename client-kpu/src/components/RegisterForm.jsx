@@ -10,10 +10,40 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import FormModal from './FormModal.jsx'
 
+import Web3 from 'web3';
+import contractABI from './contractABI';
+
+const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
+// const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
+
+const contractAddress = "0x660F60E01C21D233bCEBB736E53dDcF5f16A68C9"
+
+// Creating a Contract instance
+const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 const RegisterForm = ({accounts}) => {
     const [wallets, setWallets] = useState(null);
+    const [TPS, setTPS] = useState(null);
+    const [fileAddress, setFileAddress] = useState(null);
     const [errors, setErrors] = useState({});
     const [fileError, setFileError] = useState('');
+
+    const [trxResult, setTrxResult] = useState({
+        blockHash: '',
+        blockNumber: 0,
+        contractAddress: null,
+        cumulativeGasUsed: 0,
+        effectiveGasPrice: 0,
+        from: "",
+        gasUsed: 0,
+        logs: [],
+        logsBloom: "",
+        status: false,
+        to: "",
+        transactionHash: "",
+        transactionIndex: 0,
+        type: ""
+    });
 
     const [txHash , setTxHash] = useState('')
     const [trxError, setTrxError] = useState(null);
@@ -33,30 +63,95 @@ const RegisterForm = ({accounts}) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         console.log(file)
-        setWallets(file)
-        setFileError('')
+        const fileReader = new FileReader();
+
+        fileReader.onload = async (e) => {
+            const contents = e.target.result;
+            const parsedData = JSON.parse(contents);
+            const tpsArr = Object.keys(parsedData).map(key => parseInt(key));
+            setWallets(Object.values(parsedData));
+            setTPS(tpsArr);
+        };
+        fileReader.readAsText(file);
+        setFileAddress(file)
+        // setWallets(file)
+        // setFileError('')
     
-        if (file) {
-            const fileType = file.type;
-            if (fileType !== 'application/json') {
-                setFileError('Please select a JSON file type.');
-            }
-        }
+        // if (file) {
+        //     const fileType = file.type;
+        //     if (fileType !== 'application/json') {
+        //         setFileError('Please select a JSON file type.');
+        //     }
+        // }
     };
     
+    const setModalData = (receipt) => {
+        setTrxResult(receipt) 
+    };
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         if (fileError === '') {
             try{
-                const res = await axios.post(`http://localhost:5000/e-rekap/setup/register`, 
-                wallets,
-                {headers: {'content-type': 'application/json; charset=utf-8'}}
-                );
-                console.log(res)
+                console.log('jfajljlsaf')
+                console.log(wallets)
+                console.log(TPS)
+                // console.log(wallets)
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const encoded = contract.methods.registerWalletOfficer(wallets, TPS).encodeABI();
+                const estimatedGas = await web3.eth.estimateGas({
+                    from: accounts[0],
+                    to: contractAddress,
+                    data: encoded
+                });
+                // console.log(estimatedGasNum, typeof(estimatedGasNum))okay
+                const tx = {
+                    // from: '0xdA25c406FC7e8b4d6179141B34f11929f5FFf1D9',
+                    from: accounts[0],
+                    to: contractAddress,
+                    data: encoded,
+                    gas: estimatedGas.toString(),
+                    // gasPrice: "0"
+                }
+                const txn_hash = await window.ethereum.request({
+                    method: "eth_sendTransaction",
+                    params: [tx]
+                })
+                setTxHash(txn_hash)
+                handleLoadShow()
+                handleShow()
+                let interval = setInterval(() => {
+                    console.log('luarrr')
+                    web3.eth.getTransactionReceipt(txn_hash, async (err, receipt) => {
+                        console.log('tengaahhhh')
+                        if(receipt) {
+                            // Clear interval
+                            clearInterval(interval)
+                            console.log("Gotten receipt")
+                            if (receipt.status === true) {
+                                console.log(receipt)
+                                const res = await axios.put(`http://localhost:5000/e-rekap/setup/register`, 
+                                                            fileAddress,
+                                                            {headers: {'content-type': 'application/json; charset=utf-8'}});
+                                console.log(res)
+                            } else if (receipt.status === false) {
+                                console.log("Tx failed")
+                            }
+                            setModalData(receipt)
+                            console.log(load)
+                            handleLoadClose()
+                            console.log(load)
+                            console.log(receipt)
+                            console.log(trxResult)
+                            
+                        }
+                    })
+                }, 6000)
+                console.log(load)
                 // console.log(wallets)
             }catch(err){
                 console.log(err)
+                setTrxError(err)
             }
         } else {
             console.log('form is not valid')
@@ -64,8 +159,6 @@ const RegisterForm = ({accounts}) => {
             // setErrors(validationErrors);
         }
     }
-
-    
 
     return (
         <Container className="mt-4">
@@ -75,7 +168,7 @@ const RegisterForm = ({accounts}) => {
                     <Col className="form-col col-6">
                         <div className="mb-3 mt-4 upload-image-wrapper">
                             <h5>Upload Daftar Wallet</h5>
-                            <input name="formImage" className="form-control mt-5 mb-3" type="file" id="formFile" required onChange={handleFileChange}/>
+                            <input name="formImage" className="form-control mt-5 mb-3" type="file" id="formFile" required onChange={handleFileChange} accept='.json'/>
                             {fileError && <span className="error">{fileError}</span>}
                         </div>
                         <div className="submit-form-wrapper mt-5 mb-2">
@@ -84,7 +177,8 @@ const RegisterForm = ({accounts}) => {
                     </Col>
                 </Row>
             </Form>   
-            {/* <FormModal load={load} show={show} handleClose={handleClose}/> */}
+            {/* <button variant="primary" onClick={handleDisconnect}>Disconnect Wallet</button> */}
+            <FormModal load={load} show={show} trxResult={trxResult} txHash={txHash} handleClose={handleClose}/>
         </Container>
     )
 }

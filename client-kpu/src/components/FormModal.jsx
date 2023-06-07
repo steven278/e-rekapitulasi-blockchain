@@ -46,7 +46,7 @@ const FormModal = ({load, show, trxResult, txHash, handleClose}) => {
                     </Row>
                     <Row className='mt-3 mb-2'>
                         <h4 className={`d-flex justify-content-center ${trxResult.status ? 'text-success' : 'text-danger'}`}>
-                            {trxResult.status == true ? 'Rekapitulasi Berhasil' : 'Rekapitulasi Gagal'}
+                            {trxResult.status == true ? 'Registrasi Wallet Berhasil' : 'Registrasi Wallet Gagal'}
                         </h4>
                     </Row>
                     <h6 className="mt-4" style={{textAlign:'center'}}>Cek Hash Transaksi : <a href={`https://sepolia.etherscan.io/tx/${trxResult.transactionHash}`} target="_blank">Lihat di Etherscan</a> </h6>
