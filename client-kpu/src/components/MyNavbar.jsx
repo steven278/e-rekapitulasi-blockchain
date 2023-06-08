@@ -6,16 +6,16 @@ import Pemilu2019 from '../assets/pemilu.jpeg'
 
 const MyNavbar = ({accounts}) => {
     return (
-        <Navbar bg="danger" expand="lg" variant="dark">
+        <Navbar bg="danger" expand="lg" variant="dark" onClick={() => window.location.reload(false)}>
             <Container>
                 <Navbar.Brand href="#home">
                     <img src={Pemilu2019} style={{width: '1.25rem', margin: '0 1rem 0 0'}} alt="" />
-                    E-Rekapitulasi KPU
+                    Sistem Registrasi Wallet
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text style={{color: 'white'}}>
-                        {accounts[0] && <span>Connected : {accounts}</span>}
+                        {accounts[0] && <span>Terhubung : {accounts}</span>}
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Container>

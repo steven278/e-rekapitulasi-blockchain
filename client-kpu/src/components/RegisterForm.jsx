@@ -62,6 +62,13 @@ const RegisterForm = ({accounts}) => {
     const handleShow = () => setShow(true);
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setFileError('')
+        if (file) {
+            const fileType = file.type;
+            if (fileType !== 'application/json') {
+                setFileError('Please select a JSON file type.');
+            }
+        }
         console.log(file)
         const fileReader = new FileReader();
 
@@ -75,14 +82,6 @@ const RegisterForm = ({accounts}) => {
         fileReader.readAsText(file);
         setFileAddress(file)
         // setWallets(file)
-        // setFileError('')
-    
-        // if (file) {
-        //     const fileType = file.type;
-        //     if (fileType !== 'application/json') {
-        //         setFileError('Please select a JSON file type.');
-        //     }
-        // }
     };
     
     const setModalData = (receipt) => {
@@ -99,18 +98,20 @@ const RegisterForm = ({accounts}) => {
                 // console.log(wallets)
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const encoded = contract.methods.registerWalletOfficer(wallets, TPS).encodeABI();
-                const estimatedGas = await web3.eth.estimateGas({
-                    from: accounts[0],
-                    to: contractAddress,
-                    data: encoded
-                });
+                // const estimatedGas = await web3.eth.estimateGas({
+                //     from: accounts[0],
+                //     to: contractAddress,
+                //     data: encoded
+                // }); 
+                // console.log(estimatedGas)
                 // console.log(estimatedGasNum, typeof(estimatedGasNum))okay
                 const tx = {
                     // from: '0xdA25c406FC7e8b4d6179141B34f11929f5FFf1D9',
                     from: accounts[0],
                     to: contractAddress,
                     data: encoded,
-                    gas: estimatedGas.toString(),
+                    gas: '43429',
+                    // gas: estimatedGas.toString(),
                     // gasPrice: "0"
                 }
                 const txn_hash = await window.ethereum.request({
@@ -168,7 +169,7 @@ const RegisterForm = ({accounts}) => {
                     <Col className="form-col col-6">
                         <div className="mb-3 mt-4 upload-image-wrapper">
                             <h5>Upload Daftar Wallet</h5>
-                            <input name="formImage" className="form-control mt-5 mb-3" type="file" id="formFile" required onChange={handleFileChange} accept='.json'/>
+                            <input name="formImage" className="form-control mt-5 mb-3" type="file" id="formFile" required onChange={handleFileChange}/>
                             {fileError && <span className="error">{fileError}</span>}
                         </div>
                         <div className="submit-form-wrapper mt-5 mb-2">

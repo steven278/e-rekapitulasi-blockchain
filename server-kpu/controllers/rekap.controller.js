@@ -25,8 +25,8 @@ web3.eth.accounts.wallet.add(signer[1]);
 // Creating a Contract instance
 const contract = new web3.eth.Contract(
     compiledContract,
-    "0x793b8f956E13d7da988440528178e9cCfdc7CEBE"
-    // process.env.CONTRACT_ADDRESS
+    // "0x793b8f956E13d7da988440528178e9cCfdc7CEBE"
+    process.env.CONTRACT_ADDRESS
 );
 
 //for testing purpose

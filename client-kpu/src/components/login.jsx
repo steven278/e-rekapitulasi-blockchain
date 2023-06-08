@@ -67,17 +67,20 @@ const Login = ({setAccounts, accounts}) => {
                 <></>
             ) : (
                 <Container className="login-wrapper">
-                    <div className="welcome mb-2">
-                        <h3 >Welcome to E-Rekapitulasi</h3>
+                    <div className="welcome mb-2 text-center">
+                        <h3 >Selamat Datang di Sistem</h3>
+                    </div>
+                    <div className="welcome mb-2 text-center">
+                        <h3 > Registrasi Wallet Petugas KPPS </h3>
                     </div>
                     <Card style={{ width: '30vw' }} className="login-card">
                         <Card.Img  src={Pemilu2019} />
-                        <Card.Title className="mx-auto mt-5">Login with Metamask</Card.Title>
+                        <Card.Title className="mx-auto mt-5">Login dengan Metamask</Card.Title>
                         <Card.Body>
                             <Button onClick={(e) => {
                                     connetWallet()
                             }}> 
-                                <span><img src={MetamaskLogo} style={{width: '1.75em'}}/> Connect Wallet</span>
+                                <span><img src={MetamaskLogo} style={{width: '1.75em'}}/> Hubungkan Wallet</span>
                             </Button>
                         </Card.Body>
                     </Card>

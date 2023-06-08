@@ -112,25 +112,27 @@ const MyForm = ({accounts}) => {
     const validateForm = (data) => {
         setErrors({})
         const errors = {};
-        // if(parseInt(data.pemilihTerdaftar) > 300){
-        //     errors.pemilihTerdaftar = "jumlah pemilih terdaftar tidak boleh melebihi 300";
-        // }
-        // if(data.penggunaHakPilih > data.pemilihTerdaftar){
-        //     errors.penggunaHakPilih = "pengguna hak pilih tidak boleh melebihi pemilh terdaftar"
-        // }
-        // if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
-        //     errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
-        // }
-        // if(data.jumlahSeluruhSuaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
-        //     errors.jumlahSeluruhSuaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
-        // }
-        // if(data.jumlahSuaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.jumlahSeluruhSuaraSah))){
-        //     errors.jumlahSuaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
-        // }
-        // if(data.jumlahSuaraSahDanTidakSah != data.penggunaHakPilih){
-        //     errors.jumlahSuaraSahDanTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
-        // }
-        
+        if(data.tps_id.length != 12){
+            errors.tps = "ID TPS harus terdiri dari 12 digit"
+        }
+        if(parseInt(data.pemilihTerdaftar) > 300){
+            errors.pemilihTerdaftar = "jumlah pemilih terdaftar tidak boleh melebihi 300";
+        }
+        if(data.penggunaHakPilih > data.pemilihTerdaftar){
+            errors.penggunaHakPilih = "pengguna hak pilih tidak boleh melebihi pemilh terdaftar"
+        }
+        if((parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2)) > data.penggunaHakPilih){
+            errors.suaraPaslon2 = "jumlah suara paslon 1 dan 2 tidak boleh melebihi pengguna hak pilih"
+        }
+        if(data.jumlahSeluruhSuaraSah != (parseInt(data.suaraPaslon1) + parseInt(data.suaraPaslon2))){
+            errors.jumlahSeluruhSuaraSah = "jumlah suara sah harus sama dengan jumlah suara paslon 1 dan 2";
+        }
+        if(data.jumlahSuaraTidakSah != (parseInt(data.penggunaHakPilih) - parseInt(data.jumlahSeluruhSuaraSah))){
+            errors.jumlahSuaraTidakSah = "jumlah suara tidak sah harus sama dengan (pengguna hak pilih - suara sah)";
+        }
+        if(data.jumlahSuaraSahDanTidakSah != data.penggunaHakPilih){
+            errors.jumlahSuaraSahDanTidakSah = "jumlah seluruh suara sah dan tidak sah harus sama dengan jumlah pengguna hak pilih"
+        }
         return errors;
     }
     const setModalData = (receipt) => {
@@ -148,11 +150,18 @@ const MyForm = ({accounts}) => {
                     formData.tps_id, formData.pemilihTerdaftar, formData.penggunaHakPilih, formData.suaraPaslon1, 
                     formData.suaraPaslon2, formData.jumlahSeluruhSuaraSah,
                     formData.jumlahSuaraTidakSah, formData.jumlahSuaraSahDanTidakSah, ipfsResult.path).encodeABI();
+                // const estimatedGas = await web3.eth.estimateGas({
+                //     from: accounts[0],
+                //     to: contractAddress,
+                //     data: encoded
+                // });
+                // console.log(estimatedGas)
                 const tx = {
                     from: accounts[0],
                     to: contractAddress,
                     data: encoded,
-                    gas: "138041",
+                    gas: '120105'
+                    // gas: estimatedGas.toString(),
                     // gasPrice: "0"
                 }
                 const txn_hash = await window.ethereum.request({
@@ -222,6 +231,7 @@ const MyForm = ({accounts}) => {
                             name="tps_id"
                             value = {formData.tps_id}
                             onChange = {handleChange} />
+                            {errors.tps && <span className="error">{errors.tps}</span>}
                         </Form.Group>
                     </Col>
                     <Col className='form-col'>

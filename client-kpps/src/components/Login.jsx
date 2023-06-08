@@ -9,6 +9,7 @@ import Pemilu2019 from '../assets/pemilu.jpeg'
 import MetamaskLogo from '../assets/metamask-logo.svg'
 import Modal from 'react-bootstrap/Modal';
 import { ImCross } from 'react-icons/im';
+import { TiTick } from 'react-icons/ti';
 import Row from 'react-bootstrap/Row'
 // function Login() {
 //     const [balance, setBalance] = useState('');
@@ -43,12 +44,7 @@ import Row from 'react-bootstrap/Row'
 
 
 
-const Login = ({setAccounts, accounts}) => {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthorized, setIsAuthorized}) => {
     const connetWallet = () => {
         //  Check if MetaMask is installed
         if (typeof window.ethereum !== 'undefined') {
@@ -60,9 +56,12 @@ const Login = ({setAccounts, accounts}) => {
                 console.log(response)
                 setAccounts(accounts);
                 window.localStorage.setItem('accounts', accounts[0]);
+                setIsAuthorized(true)
+                handleShow()
             })
             .catch(error => {
                 console.log(error);
+                setIsAuthorized(false)
                 handleShow()
             });
         }
@@ -136,19 +135,27 @@ const Login = ({setAccounts, accounts}) => {
             )}
             <Modal show={show} onHide={handleClose} backdrop="static"
             keyboard={false} aria-labelledby="contained-modal-title-vcenter"
-            centered style={{margin:'2em'}}>
-                <Modal.Header closeButton className="bg-danger light" id="login-modal-close">
+            centered>
+                <Modal.Header closeButton className={`${isAuthorized ?"bg-success":"bg-danger"} light`} id="login-modal-close">
                     {/* <Modal.Title>Login Failed</Modal.Title> */}
                 </Modal.Header>
                     <Modal.Body>
-                        <Row className='text-danger mb-3 mt-3'>
-                            <ImCross size={50}/>
+                        <Row className='mb-3 mt-2'>
+                            {isAuthorized == true ?
+                            <TiTick size={80} style={{color:'green'}}/> :
+                            <ImCross size={50} style={{color:'red'}}/> 
+                            }
                         </Row>
                         <Row className='mt-3 mb-2'>
-                                <h4 className='d-flex justify-content-center text-danger'> Login Failed</h4>
+                            {/* <h4 className='d-flex justify-content-center text-danger'> Login Failed</h4> */}
+                            <h4 className={`d-flex justify-content-center`}>
+                                {isAuthorized == true ? 'Login Success' : 'Login Failed'}
+                            </h4>
                         </Row>
-                        <Row className='d-flex justify-content-center'>
-                                Your Wallet Address is Not Registered
+                        <Row className='d-flex justify-content-center text-danger'>
+                            <h6 style={{textAlign:'center'}}>
+                                {isAuthorized == true ? "" : "Your Wallet Address is Not Registered"}
+                            </h6>
                         </Row>
                     </Modal.Body>
             </Modal>
