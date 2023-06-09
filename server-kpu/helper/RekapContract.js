@@ -1,77 +1,6 @@
 const compiledContract =
 	[
 		{
-			"inputs": [
-				{
-					"internalType": "address[]",
-					"name": "_walletAddress",
-					"type": "address[]"
-				},
-				{
-					"internalType": "uint256[]",
-					"name": "_TPS_ID",
-					"type": "uint256[]"
-				}
-			],
-			"name": "registerWalletOfficer",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_TPS_ID",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_pemilihTerdaftar",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_penggunaHakPilih",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_suaraPaslon1",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_suaraPaslon2",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_jumlahSeluruhSuaraSah",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_jumlahSuaraTidakSah",
-					"type": "uint16"
-				},
-				{
-					"internalType": "uint16",
-					"name": "_jumlahSuaraSahDanTidakSah",
-					"type": "uint16"
-				},
-				{
-					"internalType": "string",
-					"name": "_formImage",
-					"type": "string"
-				}
-			],
-			"name": "storeVoteResult",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
 			"inputs": [],
 			"stateMutability": "nonpayable",
 			"type": "constructor"
@@ -149,6 +78,19 @@ const compiledContract =
 		},
 		{
 			"inputs": [],
+			"name": "isRegistered",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "owner",
 			"outputs": [
 				{
@@ -158,6 +100,77 @@ const compiledContract =
 				}
 			],
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "_walletAddress",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "_TPS_ID",
+					"type": "uint256[]"
+				}
+			],
+			"name": "registerWalletOfficer",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_TPS_ID",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_pemilihTerdaftar",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_penggunaHakPilih",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_suaraPaslon1",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_suaraPaslon2",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_jumlahSeluruhSuaraSah",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_jumlahSuaraTidakSah",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_jumlahSuaraSahDanTidakSah",
+					"type": "uint16"
+				},
+				{
+					"internalType": "string",
+					"name": "_formImage",
+					"type": "string"
+				}
+			],
+			"name": "storeVoteResult",
+			"outputs": [],
+			"stateMutability": "payable",
 			"type": "function"
 		}
 	]

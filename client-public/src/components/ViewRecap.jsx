@@ -104,7 +104,10 @@ const ViewRecap = ({regionId}) => {
                             </tr>
                             <tr>
                                 <td>Cek Wallet Address KPPS</td>
-                                <td><a href={`https://sepolia.etherscan.io/address/${recapResult[8]}`} target="_blank"> Lihat Address KPPS</a></td>
+                                {recapResult[8] != '0x0000000000000000000000000000000000000000' 
+                                ?  <td><a href={`https://sepolia.etherscan.io/address/${recapResult[8]}`} target="_blank"> Lihat Address KPPS</a></td>
+                                :   <td><a href={`https://sepolia.etherscan.io/address/`} target="_blank"> Lihat Address KPPS</a></td>
+                                }
                             </tr>
                             <tr>
                                 <td>URL Form C1</td>

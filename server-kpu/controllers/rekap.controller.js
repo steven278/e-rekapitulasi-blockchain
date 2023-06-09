@@ -204,7 +204,9 @@ const getRecapitulationById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const tx = await contract.methods.getRecapitulationByTpsId(id).call();
+        console.log(tx)
         const tps = await Tps.findOne({ where: { id_TPS: id } })
+        console.log(tps)
         return res.status(200).json({
             status: 'success',
             data: tx,
