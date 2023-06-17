@@ -43,7 +43,7 @@ const RegionTable = ({recapState, setRegionId, regionId, currentRegion, setCurre
     return (
         <Row>
             <Col>
-                <Table striped bordered hover className='mt-3 region-table rounded' >
+                <Table striped bordered hover className='mt-3 region-table rounded'>
                     <thead className="bg-dark text-light">
                         <tr>
                             <th>Wilayah</th>

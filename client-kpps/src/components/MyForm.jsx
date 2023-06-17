@@ -21,7 +21,7 @@ import {Buffer} from 'buffer';
 const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
-const contractAddress = "0xfC0795c5180F2350744699d61aA3291a6dFF14aD"
+const contractAddress = "0xF20e945056015ebe60Aa604306eD9058685faA69"
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);

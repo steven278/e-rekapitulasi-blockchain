@@ -68,11 +68,11 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
                 <></>
             ) : (
                 <Container className="login-wrapper">
-                    <div className="welcome mb-2 text-center">
-                        <h3 >Selamat Datang di Sistem</h3>
+                    <div className="welcome mt-3 text-center">
+                        <h4 >Selamat Datang di Sistem</h4>
                     </div>
                     <div className="welcome mb-2 text-center">
-                        <h3 > Registrasi Wallet Petugas KPPS </h3>
+                        <h4 > Registrasi Wallet Petugas KPPS </h4>
                     </div>
                     <Card style={{ width: '30vw' }} className="login-card">
                         <Card.Img  src={Pemilu2019} />
