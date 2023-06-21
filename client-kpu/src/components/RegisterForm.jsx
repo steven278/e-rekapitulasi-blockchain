@@ -13,10 +13,10 @@ import FormModal from './FormModal.jsx'
 import Web3 from 'web3';
 import contractABI from './contractABI';
 
-const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
+const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
-const contractAddress = "0xF20e945056015ebe60Aa604306eD9058685faA69"
+const contractAddress = import.meta.env.CONTRACT_ADDRESS
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -131,7 +131,7 @@ const RegisterForm = ({accounts}) => {
                             console.log("Gotten receipt")
                             if (receipt.status === true) {
                                 console.log(receipt)
-                                const res = await axios.put(`http://localhost:5000/e-rekap/setup/register`, 
+                                const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${tpsId}/e-rekap/setup/register`, 
                                                             fileAddress,
                                                             {headers: {'content-type': 'application/json; charset=utf-8'}});
                                 console.log(res)

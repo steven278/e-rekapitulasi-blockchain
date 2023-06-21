@@ -52,7 +52,7 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             window.ethereum.request({ method: 'eth_requestAccounts' })
             .then(async (accounts) => {
                 console.log(accounts)
-                const response = await axios.get(`http://localhost:5000/e-rekap/rekap/login/${accounts[0]}`);
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/login/${accounts[0]}`);
                 console.log(response)
                 setAccounts(accounts);
                 window.localStorage.setItem('accounts', accounts[0]);

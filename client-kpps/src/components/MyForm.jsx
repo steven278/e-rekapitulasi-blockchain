@@ -6,8 +6,6 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
 
 import FormModal from './FormModal'
 
@@ -18,16 +16,17 @@ import contractABI from './contractABI';
 import { create, CID } from "ipfs-http-client";
 import {Buffer} from 'buffer';
 
-const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
+// const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
+const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
-const contractAddress = "0xF20e945056015ebe60Aa604306eD9058685faA69"
+const contractAddress = import.meta.env.CONTRACT_ADDRESS
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-const projectId = "2OvXaQhOP9Jvs0vuyWdvhfnxM3x"; //project id = api key infura ipfs
-const projectSecret = "e3d5291a020c2390698f852eff0efe15" // project secret = api key secret infura ipfs
+const projectId = import.meta.env.INFURA_IPFS_PROJECT_ID; //project id = api key infura ipfs
+const projectSecret = import.meta.env.INFURA_IPFS_PROJECT_SECRET // project secret = api key secret infura ipfs
 
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 const client = create({
@@ -182,7 +181,7 @@ const MyForm = ({accounts}) => {
                             if (receipt.status === true) {
                                 console.log(receipt)
                                 const tpsId = formData.tps_id.toString();
-                                const res = await axios.put(`http://localhost:5000/e-rekap/rekap/${tpsId}`, {txn_hash});
+                                const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${tpsId}`, {txn_hash});
                                 console.log(res)
                             } else if (receipt.status === false) {
                                 console.log("Tx failed")

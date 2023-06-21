@@ -9,7 +9,7 @@ const ViewRecap = ({regionId}) => {
     const [recapResult, setRecapResult] = useState([]);
     const [txnHash, setTxnHash] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/e-rekap/rekap/${regionId}`)
+        fetch(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${regionId}`)
         .then(response => response.json())
         .then(res => {
             console.log(res)

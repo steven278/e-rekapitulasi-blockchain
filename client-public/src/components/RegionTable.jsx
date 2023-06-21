@@ -25,7 +25,7 @@ const RegionTable = ({recapState, setRegionId, regionId, currentRegion, setCurre
         setCurrentRegion(current => [...current, nama])
     }
     useEffect(() => {
-        fetch(`http://localhost:5000/e-rekap/region/${dataToFetch.region}/${regionId}`)
+        fetch(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/region/${dataToFetch.region}/${regionId}`)
         .then(response => response.json())
         .then(json => json.data.map((curr) => ({
             id: curr[dataToFetch.id],
