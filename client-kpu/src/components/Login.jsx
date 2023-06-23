@@ -19,7 +19,7 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             window.ethereum.request({ method: 'eth_requestAccounts' })
             .then(async (accounts) => {
                 console.log(accounts)
-                const response = await axios.get(`http://localhost:5000/e-rekap/rekap/login/owner/${accounts[0]}`);
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/login/owner/${accounts[0]}`);
                 console.log(response)
                 setAccounts(accounts);
                 window.localStorage.setItem('accounts', accounts[0]);
@@ -69,10 +69,10 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             ) : (
                 <Container className="login-wrapper">
                     <div className="welcome mt-3 text-center">
-                        <h4 >Selamat Datang di Sistem</h4>
+                        <h3 >Selamat Datang di Sistem</h3>
                     </div>
                     <div className="welcome mb-2 text-center">
-                        <h4 > Registrasi Wallet Petugas KPPS </h4>
+                        <h3> Registrasi Wallet Petugas KPPS </h3>
                     </div>
                     <Card style={{ width: '30vw' }} className="login-card">
                         <Card.Img  src={Pemilu2019} />

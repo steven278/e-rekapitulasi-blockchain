@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // Go to https://infura.io, sign up, create a new API key
 // in its dashboard, and replace "KEY" with it
-const INFURA_API_KEY = "b023ce6c8c724d5b8843edd7023e5940";
+const INFURA_API_KEY = import.meta.env.VITE_INFURA_API_KEY;
 
 // Replace this private key with your Sepolia account private key
 // To export your private key from Coinbase Wallet, go to
@@ -14,7 +14,7 @@ const INFURA_API_KEY = "b023ce6c8c724d5b8843edd7023e5940";
 // To export your private key from Metamask, open Metamask and
 // go to Account Details > Export Private Key
 // Beware: NEVER put real Ether into testing accounts
-const SEPOLIA_PRIVATE_KEY = "3df117fd8be7bb7c26c01e455753146c9f6a1c21f789bfc8c97f2edf8513db17";
+const SEPOLIA_PRIVATE_KEY = import.meta.env.VITE_SEPOLIA_PRIVATE_KEY;
 
 module.exports = {
   solidity: "0.8.18",

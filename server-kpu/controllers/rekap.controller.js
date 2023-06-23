@@ -162,7 +162,6 @@ const checkLoginOwner = async (req, res, next) => {
     try {
         const { wallet } = req.params;
         const owner = await contract.methods.owner().call();
-
         if (owner.toLowerCase() !== wallet.toLowerCase()) {
             console.log('second')
             throw new Error('Your wallet address is not authorized to access this system');

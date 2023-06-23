@@ -16,7 +16,7 @@ import contractABI from './contractABI';
 const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
-const contractAddress = import.meta.env.CONTRACT_ADDRESS
+const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -131,7 +131,7 @@ const RegisterForm = ({accounts}) => {
                             console.log("Gotten receipt")
                             if (receipt.status === true) {
                                 console.log(receipt)
-                                const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${tpsId}/e-rekap/setup/register`, 
+                                const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/setup/register`, 
                                                             fileAddress,
                                                             {headers: {'content-type': 'application/json; charset=utf-8'}});
                                 console.log(res)

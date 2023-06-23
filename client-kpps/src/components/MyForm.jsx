@@ -20,13 +20,13 @@ import {Buffer} from 'buffer';
 const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
 // const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
-const contractAddress = import.meta.env.CONTRACT_ADDRESS
+const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS
 
 // Creating a Contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-const projectId = import.meta.env.INFURA_IPFS_PROJECT_ID; //project id = api key infura ipfs
-const projectSecret = import.meta.env.INFURA_IPFS_PROJECT_SECRET // project secret = api key secret infura ipfs
+const projectId = import.meta.env.VITE_INFURA_IPFS_PROJECT_ID; //project id = api key infura ipfs
+const projectSecret = import.meta.env.VITE_INFURA_IPFS_PROJECT_SECRET // project secret = api key secret infura ipfs
 
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 const client = create({
@@ -144,7 +144,11 @@ const MyForm = ({accounts}) => {
         if (Object.keys(validationErrors).length === 0 && fileError === '') {
             try{
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                console.log('wuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuwww')
+                console.log(import.meta.env.INFURA_IPFS_PROJECT_ID)
+                console.log(projectId, projectSecret)
                 const ipfsResult = await client.add(formImage)
+                console.log('miaaaaaaaaaaaaaoooooooooo')
                 const encoded = contract.methods.storeVoteResult(
                     formData.tps_id, formData.pemilihTerdaftar, formData.penggunaHakPilih, formData.suaraPaslon1, 
                     formData.suaraPaslon2, formData.jumlahSeluruhSuaraSah,

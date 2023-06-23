@@ -25,17 +25,15 @@ These instructions will get you a copy of the project up and running on your loc
 ## Smart Contract Setup
 Before you start, you need to re-deploy the smart contract using a new contract address, because the smart contract for KPU is only used once for registering the KPPS Wallet. Here are the steps :
 1. go to deploy_smart_contract>hardhat.config.js
-2. change the infura API_KEY with your own API_KEY
-3. 
-
-1. `cd deploy_smart_contract`
-2. `npm i`
-3. `npx hardhat run scripts/deploy.js --network sepolia`
-4. copy the deployed address from terminal
-5. change the smart contract address in server-kpu>.env
-6. cnage the smart contract address in client-kpu>src>RegisterForm.jsx 
-7. change the smart contract address in client-kpps>src>MyForm.jsx
-
+2. change the infura API_KEY and SEPOLIA_PRIVATE_KEY with your own API KEY and your Wallet Private Key 
+3. `cd deploy_smart_contract`
+4. `npm i`
+5. `npx hardhat run scripts/deploy.js --network sepolia`
+6. copy the deployed address from terminal
+7. change the smart contract address and another environment variables in server-kpu>.env
+8. cnage the smart contract address and another environment variables in client-kpu>.env
+9. change the smart contract address and another environment variables in client-kpps>.env
+10. change the environment variables in client-public>.env
 
 ***
 ## Setup
