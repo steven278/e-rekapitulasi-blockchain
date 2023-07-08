@@ -91,7 +91,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             keyboard={false} aria-labelledby="contained-modal-title-vcenter"
             centered >
                 <Modal.Header closeButton className={`${isAuthorized ?"bg-success":"bg-danger"} light`} id="login-modal-close">
-                    {/* <Modal.Title>Login Failed</Modal.Title> */}
                 </Modal.Header>
                     <Modal.Body>
                         <Row className='text-danger mb-3 mt-3'>

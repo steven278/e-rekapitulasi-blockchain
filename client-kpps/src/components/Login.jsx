@@ -11,38 +11,6 @@ import Modal from 'react-bootstrap/Modal';
 import { ImCross } from 'react-icons/im';
 import { TiTick } from 'react-icons/ti';
 import Row from 'react-bootstrap/Row'
-// function Login() {
-//     const [balance, setBalance] = useState('');
-//     const [address, setAddress] = useState('');
-//     const navigate = useNavigate();
-
-//     async function connectToMetaMask() {
-//         if (window.ethereum) {
-//             try {
-//                 await window.ethereum.request({ method: 'eth_requestAccounts' });
-//                 const web3 = new Web3(window.ethereum);
-//                 const accounts = await web3.eth.getAccounts();
-//                 const balance = await web3.eth.getBalance(accounts[0]);
-//                 setBalance(web3.utils.fromWei(balance, 'ether'));
-//                 navigate('/form', {state:{address : accounts[0], balance}})
-//             } catch (error) {
-//                 console.error(error);
-//             }
-//         } else {
-//             console.error('MetaMask not detected');
-//         }
-//     }
-
-//     return (
-//         <Container className="mt-5">
-//             <Button onClick={connectToMetaMask} className="mb-3">Connect to MetaMask</Button>
-//             <h3>Account balance: {balance} ETH</h3>
-//             <h3>Account address: {address} ETH</h3>
-//         </Container>
-//     );
-// }
-
-
 
 const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthorized, setIsAuthorized}) => {
     const connetWallet = () => {
@@ -82,15 +50,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
     //         });
     //     }
     // }
-
-    // const loadWeb3 = async () => {
-    //     if (typeof window.ethereum !== 'undefined') {
-    //         await window.ethereum.enable();
-    //         // Other Web3 initialization code can go here
-    //     } else {
-    //         console.log("Please install MetaMask to use this application.");
-    //     }
-    // };
     useEffect(() => {
         const acc = [];
         if(accounts.length == 0) {
@@ -106,15 +65,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
         <Container>
             {accounts[0] ? (
                 <></>
-            // <div className='mt-4 mb-4 form-title'>
-                
-            //     <h2>Logged in with MetaMask!</h2>
-            //     <p>Account: {accounts[0]}</p>
-            //     <Button onClick={(e) => {
-            //                 handleDisconnect()
-            //     }}>Disconnect Wallet</Button>
-            //     Your logged-in content goes here
-            // </div>
             ) : (
                 <Container className="login-wrapper">
                     <div className="welcome mb-2">
@@ -137,7 +87,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             keyboard={false} aria-labelledby="contained-modal-title-vcenter"
             centered>
                 <Modal.Header closeButton className={`${isAuthorized ?"bg-success":"bg-danger"} light`} id="login-modal-close">
-                    {/* <Modal.Title>Login Failed</Modal.Title> */}
                 </Modal.Header>
                     <Modal.Body>
                         <Row className='mb-3 mt-2'>
@@ -147,7 +96,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
                             }
                         </Row>
                         <Row className='mt-3 mb-2'>
-                            {/* <h4 className='d-flex justify-content-center text-danger'> Login Failed</h4> */}
                             <h4 className={`d-flex justify-content-center`}>
                                 {isAuthorized == true ? 'Login Success' : 'Login Failed'}
                             </h4>

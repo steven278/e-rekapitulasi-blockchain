@@ -9,13 +9,11 @@ const FormModal = ({load, show, trxResult, txHash, handleClose}) => {
         if(load){
             return(
                 <Modal.Header className="bg-secondary light login-modal-close">
-                    {/* <Modal.Title>{load ? 'Menunggu Konfirmasi' : 'Hasil Transaksi'}</Modal.Title> */}
                 </Modal.Header>
             )
         }else{
             return(
                 <Modal.Header closeButton className={`${trxResult.status ? 'bg-success': 'bg-danger'} light login-modal-close`}>
-                    {/* <Modal.Title>{load ? 'Menunggu Konfirmasi' : 'Hasil Transaksi'}</Modal.Title> */}
                 </Modal.Header>
             )
         }
