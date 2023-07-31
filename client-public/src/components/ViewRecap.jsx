@@ -3,16 +3,13 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 const ViewRecap = ({regionId}) => {
-    console.log(regionId, typeof(regionId))
     const [recapResult, setRecapResult] = useState([]);
     const [txnHash, setTxnHash] = useState([]);
     useEffect(() => {
         fetch(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${regionId}`)
         .then(response => response.json())
         .then(res => {
-            console.log(res)
             setRecapResult(res.data)
             setTxnHash(res.txn_hash)
         })

@@ -1,10 +1,8 @@
 body{ min-height:100vh; margin:0; position:relative; }
 header{ min-height:50px; }
 
-/* Trick: */
 body {
   position: relative;
-  /* background-color: #f1f1f1 */
 }
 
 body::after {

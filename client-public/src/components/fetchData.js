@@ -12,7 +12,6 @@ const getRegion = async (props) => {
             }
         })
         return transformedProvinces
-        // setProvince(transformedProvinces)
     } catch (error) {
         console.error(error);
     }

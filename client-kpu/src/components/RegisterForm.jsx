@@ -6,7 +6,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
 
 import FormModal from './FormModal.jsx'
 
@@ -14,7 +13,6 @@ import Web3 from 'web3';
 import contractABI from './contractABI';
 
 const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
-// const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
 const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS
 
@@ -69,7 +67,6 @@ const RegisterForm = ({accounts}) => {
                 setFileError('Please select a JSON file type.');
             }
         }
-        console.log(file)
         const fileReader = new FileReader();
 
         fileReader.onload = async (e) => {
@@ -92,19 +89,8 @@ const RegisterForm = ({accounts}) => {
         e.preventDefault();
         if (fileError === '') {
             try{
-                console.log('jfajljlsaf')
-                console.log(wallets)
-                console.log(TPS)
-                // console.log(wallets)
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const encoded = contract.methods.registerWalletOfficer(wallets, TPS).encodeABI();
-                // const estimatedGas = await web3.eth.estimateGas({
-                //     from: accounts[0],
-                //     to: contractAddress,
-                //     data: encoded
-                // }); 
-                // console.log(estimatedGas)
-                // console.log(estimatedGasNum, typeof(estimatedGasNum))okay
                 const tx = {
                     // from: '0xdA25c406FC7e8b4d6179141B34f11929f5FFf1D9',
                     from: accounts[0],
@@ -122,34 +108,22 @@ const RegisterForm = ({accounts}) => {
                 handleLoadShow()
                 handleShow()
                 let interval = setInterval(() => {
-                    console.log('luarrr')
                     web3.eth.getTransactionReceipt(txn_hash, async (err, receipt) => {
-                        console.log('tengaahhhh')
                         if(receipt) {
                             // Clear interval
                             clearInterval(interval)
-                            console.log("Gotten receipt")
                             if (receipt.status === true) {
-                                console.log(receipt)
                                 const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/setup/register`, 
                                                             fileAddress,
                                                             {headers: {'content-type': 'application/json; charset=utf-8'}});
-                                console.log(res)
                             } else if (receipt.status === false) {
                                 console.log("Tx failed")
                             }
                             setModalData(receipt)
-                            console.log(load)
                             handleLoadClose()
-                            console.log(load)
-                            console.log(receipt)
-                            console.log(trxResult)
-                            
                         }
                     })
                 }, 6000)
-                console.log(load)
-                // console.log(wallets)
             }catch(err){
                 console.log(err)
                 setTrxError(err)
@@ -178,7 +152,6 @@ const RegisterForm = ({accounts}) => {
                     </Col>
                 </Row>
             </Form>   
-            {/* <button variant="primary" onClick={handleDisconnect}>Disconnect Wallet</button> */}
             <FormModal load={load} show={show} trxResult={trxResult} txHash={txHash} handleClose={handleClose}/>
         </Container>
     )

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -9,16 +8,13 @@ import Col from 'react-bootstrap/Col';
 
 import FormModal from './FormModal'
 
-// import { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
 import contractABI from './contractABI';
 
 import { create, CID } from "ipfs-http-client";
 import {Buffer} from 'buffer';
 
-// const web3 = new Web3(new Web3.providers.HttpProvider( `https://sepolia.infura.io/v3/b023ce6c8c724d5b8843edd7023e5940`));
 const web3 = new Web3(new Web3.providers.HttpProvider(import.meta.env.VITE_WEB3_PROVIDER));
-// const web3 = new Web3(new Web3.providers.HttpProvider( `https://eth-sepolia.g.alchemy.com/v2/XIL9z6I2wgDrXCG0Og0BDkW1VwbnmrwP`));
 
 const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS
 
@@ -95,10 +91,6 @@ const MyForm = ({accounts}) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setFormImage(file)
-        // setFormData((prevData) => ({
-        //     ...prevData,
-        //     formImage: file
-        // }));
         setFileError('')
     
         if (file) {
@@ -144,21 +136,11 @@ const MyForm = ({accounts}) => {
         if (Object.keys(validationErrors).length === 0 && fileError === '') {
             try{
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                console.log('wuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuwww')
-                console.log(import.meta.env.INFURA_IPFS_PROJECT_ID)
-                console.log(projectId, projectSecret)
                 const ipfsResult = await client.add(formImage)
-                console.log('miaaaaaaaaaaaaaoooooooooo')
                 const encoded = contract.methods.storeVoteResult(
                     formData.tps_id, formData.pemilihTerdaftar, formData.penggunaHakPilih, formData.suaraPaslon1, 
                     formData.suaraPaslon2, formData.jumlahSeluruhSuaraSah,
                     formData.jumlahSuaraTidakSah, formData.jumlahSuaraSahDanTidakSah, ipfsResult.path).encodeABI();
-                // const estimatedGas = await web3.eth.estimateGas({
-                //     from: accounts[0],
-                //     to: contractAddress,
-                //     data: encoded
-                // });
-                // console.log(estimatedGas)
                 const tx = {
                     from: accounts[0],
                     to: contractAddress,
@@ -175,32 +157,21 @@ const MyForm = ({accounts}) => {
                 handleLoadShow()
                 handleShow()
                 let interval = setInterval(() => {
-                    console.log('luarrr')
                     web3.eth.getTransactionReceipt(txn_hash, async (err, receipt) => {
-                        console.log('tengaahhhh')
                         if(receipt) {
                             // Clear interval
                             clearInterval(interval)
-                            console.log("Gotten receipt")
                             if (receipt.status === true) {
-                                console.log(receipt)
                                 const tpsId = formData.tps_id.toString();
                                 const res = await axios.put(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/${tpsId}`, {txn_hash});
-                                console.log(res)
                             } else if (receipt.status === false) {
                                 console.log("Tx failed")
                             }
                             setModalData(receipt)
-                            console.log(load)
                             handleLoadClose()
-                            console.log(load)
-                            console.log(receipt)
-                            console.log(trxResult)
-                            
                         }
                     })
                 }, 6000)
-                console.log(load)
             }catch(err){
                 console.log(err)
                 setTrxError(err);

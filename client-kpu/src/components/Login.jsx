@@ -18,15 +18,11 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             // Request account access if needed
             window.ethereum.request({ method: 'eth_requestAccounts' })
             .then(async (accounts) => {
-                console.log(accounts)
                 const response = await axios.get(`${import.meta.env.VITE_SERVER_PROTOCOL_DOMAIN}${import.meta.env.VITE_SERVER_PORT}/e-rekap/rekap/login/owner/${accounts[0]}`);
-                console.log(response)
                 setAccounts(accounts);
                 window.localStorage.setItem('accounts', accounts[0]);
                 setIsAuthorized(true)
                 handleShow()
-                console.log('slfjksjflsjfjslj')
-                console.log(show)
             })
             .catch(error => {
                 console.log(error);
@@ -35,22 +31,6 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
             });
         }
     }
-    // const handleDisconnect = () => {
-    //     console.log('aewerwr')
-    //     console.log(window.ethereum)
-    //     console.log(window.ethereum.disconnect)
-    //     if (window.ethereum && window.ethereum.disconnect) {
-    //         window.ethereum.disconnect()
-    //         .then(() => {
-    //             console.log('Disconnected from MetaMask');
-    //             setAccounts([])
-    //             window.localStorage.removeItem('accounts');
-    //         })
-    //         .catch(error => {
-    //             console.log('Error disconnecting from MetaMask:', error);
-    //         });
-    //     }
-    // }
     useEffect(() => {
         const acc = [];
         if(accounts.length == 0) {
@@ -116,46 +96,3 @@ const Login = ({setAccounts, accounts, show, handleShow, handleClose, isAuthoriz
     };
 
 export default Login;
-
-
-
-
-
-
-
-
-// import Web3 from 'web3';
-// import { useState, useEffect, useRef } from 'react';
-// import Button from 'react-bootstrap/Button';
-// import Container from 'react-bootstrap/Container';
-// import { useWeb3React } from "@web3-react/core"
-// import { injected } from "../components/injected";
-
-// const Login = () => {
-//     const { active, account, library, connector, activate, deactivate } = useWeb3React()
-
-//     async function connect() {
-//         try {
-//             await activate(injected)
-//         } catch (ex) {
-//             console.log(ex)
-//         }
-//     }
-
-//     async function disconnect() {
-//         try {
-//             deactivate()
-//         } catch (ex) {
-//             console.log(ex)
-//         }
-//     }
-//     return (
-//         <Container className="mt-3">
-//             <Button onClick={connect} variant="primary">Connect to Metamask</Button>
-//             {active ? <span>Connected with <b>{account}</b></span> : <span>Not connected</span>}
-//             <Button onClick={disconnect} variant="primary">Disconnect</Button>
-            
-//         </Container>
-//     )
-// }
-// export default Login;
